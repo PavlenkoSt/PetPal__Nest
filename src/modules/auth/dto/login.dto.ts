@@ -6,6 +6,5 @@ export class LoginDTO {
   login: string;
 
   @IsString()
-  @Length(6, 50)
-  password: string;
+  id: string;
 }

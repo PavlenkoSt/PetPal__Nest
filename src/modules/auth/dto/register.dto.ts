@@ -1,14 +1,22 @@
-import { IsNumber, IsString, Length, Max, Min } from 'class-validator';
+import { IsDate, IsString, Length } from 'class-validator';
 
-import { LoginDTO } from './login.dto';
+export class RegisterDTO {
+  @IsString()
+  @Length(6, 50)
+  login: string;
 
-export class RegisterDTO extends LoginDTO {
+  @IsString()
+  @Length(6, 50)
+  password: string;
+
   @IsString()
   @Length(4, 50)
-  name: string;
+  firstName: string;
 
-  @IsNumber()
-  @Min(10)
-  @Max(120)
-  age: number;
+  @IsString()
+  @Length(4, 50)
+  lastName: string;
+
+  @IsDate()
+  dateOfBirth: Date;
 }
