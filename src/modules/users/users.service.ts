@@ -8,7 +8,6 @@ export class UsersService {
     {
       id: '1',
       login: 'johnatan',
-      dateOfBirth: new Date(),
       firstName: 'John',
       lastName: 'Verbos',
       passwordHash: 'test password',

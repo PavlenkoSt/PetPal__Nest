@@ -4,5 +4,4 @@ export class User {
   lastName: string;
   login: string;
   passwordHash: string;
-  dateOfBirth: Date;
 }
