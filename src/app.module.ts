@@ -5,9 +5,12 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { PetsModule } from './modules/pets/pets.module';
+import { PetsHealthModule } from './modules/pets-health/pets-health.module';
+import { PetsMediaModule } from './modules/pets-media/pets-media.module';
 
 @Module({
-  imports: [AuthModule, UsersModule],
+  imports: [AuthModule, UsersModule, PetsModule, PetsHealthModule, PetsMediaModule],
   providers: [
     {
       provide: APP_GUARD,
