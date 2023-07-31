@@ -7,6 +7,7 @@ import { RegisterDTO } from './dto/register.dto';
 import { ICurrentUser } from 'src/decorators/user.decorator';
 import { mongoParseObject } from 'src/db/mongo-parse-object.util';
 import { JwtBlacklistService } from '../jwt-blacklist/jwt-blacklist.service';
+import { IDecodedToken } from 'src/interfaces/IDecodedToken';
 
 @Injectable()
 export class AuthService {
@@ -57,9 +58,15 @@ export class AuthService {
   async refreshToken(refreshToken: string) {
     if (!refreshToken) throw new UnauthorizedException();
 
-    const decoded = this.jwtService.decode(refreshToken);
+    const decoded = this.jwtService.decode(refreshToken) as IDecodedToken;
 
-    if (!decoded) throw new UnauthorizedException();
+    if (!decoded || !decoded.exp) throw new UnauthorizedException();
+
+    const expirationDate = new Date(decoded.exp * 1000);
+
+    const now = new Date();
+
+    if (now >= expirationDate) throw new UnauthorizedException();
 
     const user = await this.usersService.findOneById(decoded.sub);
 

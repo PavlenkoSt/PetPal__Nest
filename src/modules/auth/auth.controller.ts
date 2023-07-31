@@ -62,7 +62,9 @@ export class AuthController {
     @Headers() headers: { authorization: string },
     @Res({ passthrough: true }) response: Response,
   ) {
+    const token = headers?.authorization?.split(' ')?.[1];
+
     response.clearCookie('refresh_token');
-    return this.authService.logout(headers?.authorization?.split(' ')?.[1]);
+    return this.authService.logout(token);
   }
 }
