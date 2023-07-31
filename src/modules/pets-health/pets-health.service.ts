@@ -4,6 +4,8 @@ import { UpdatePetsHealthDto } from './dto/update-pets-health.dto';
 
 @Injectable()
 export class PetsHealthService {
+  constructor() {}
+
   create(createPetsHealthDto: CreatePetsHealthDto) {
     return 'This action adds a new petsHealth';
   }

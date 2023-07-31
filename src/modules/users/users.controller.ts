@@ -1,14 +1,19 @@
-import { Controller, Get, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Param } from '@nestjs/common';
 
 import { UsersService } from './users.service';
+import { ICurrentUser, User } from 'src/decorators/user.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Get('profile')
-  getProfile(@Req() req: Request) {
-    return this.usersService.findoneById(req.user.id);
+  @Get('current')
+  getProfile(@User() user: ICurrentUser) {
+    return this.usersService.getProfile(String(user.id));
+  }
+
+  @Get(':id')
+  getProfileById(@Param() id: string) {
+    return this.usersService.getProfile(id);
   }
 }

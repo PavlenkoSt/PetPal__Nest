@@ -1,6 +1,10 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { APP_GUARD } from '@nestjs/core';
 
+import configuration from './config/configuration';
+import { mongooseConnectionFactory } from './db/mongoose.factory';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 import { AuthModule } from './modules/auth/auth.module';
@@ -8,16 +12,28 @@ import { UsersModule } from './modules/users/users.module';
 import { PetsModule } from './modules/pets/pets.module';
 import { PetsHealthModule } from './modules/pets-health/pets-health.module';
 import { PetsMediaModule } from './modules/pets-media/pets-media.module';
+import { JwtBlacklistModule } from './modules/jwt-blacklist/jwt-blacklist.module';
+import { JwtBlacklistService } from './modules/jwt-blacklist/jwt-blacklist.service';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+      isGlobal: true,
+    }),
+    MongooseModule.forRootAsync({
+      useFactory: mongooseConnectionFactory,
+      inject: [ConfigService],
+    }),
     AuthModule,
     UsersModule,
     PetsModule,
     PetsHealthModule,
     PetsMediaModule,
+    JwtBlacklistModule,
   ],
   providers: [
+    JwtBlacklistService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

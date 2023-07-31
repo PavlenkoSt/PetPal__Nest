@@ -4,5 +4,10 @@ declare module 'express' {
       id: string;
       login: string;
     };
+    cookies: any;
+  }
+  export interface Response {
+    cookie: any;
+    clearCookie: (cookie: string) => void;
   }
 }

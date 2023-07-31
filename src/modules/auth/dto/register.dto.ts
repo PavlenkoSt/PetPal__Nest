@@ -1,22 +1,3 @@
-import { IsDate, IsString, Length } from 'class-validator';
+import { CreateUserDto } from 'src/modules/users/dto/create-user.dto';
 
-export class RegisterDTO {
-  @IsString()
-  @Length(6, 50)
-  login: string;
-
-  @IsString()
-  @Length(6, 50)
-  password: string;
-
-  @IsString()
-  @Length(4, 50)
-  firstName: string;
-
-  @IsString()
-  @Length(4, 50)
-  lastName: string;
-
-  @IsDate()
-  dateOfBirth: Date;
-}
+export class RegisterDTO extends CreateUserDto {}

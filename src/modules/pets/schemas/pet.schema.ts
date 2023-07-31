@@ -1,0 +1,27 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument, Schema as NativeSchema } from 'mongoose';
+import { User } from 'src/modules/users/schemas/user.schema';
+
+export type PetDocument = HydratedDocument<Pet>;
+
+@Schema()
+export class Pet {
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
+  dateOfBirth: Date;
+
+  @Prop({ required: true })
+  breed: string;
+
+  @Prop({
+    required: true,
+    ref: 'User',
+    type: NativeSchema.Types.ObjectId,
+    unique: false,
+  })
+  ownerId: NativeSchema.Types.ObjectId;
+}
+
+export const PetSchema = SchemaFactory.createForClass(Pet);

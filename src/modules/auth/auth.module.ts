@@ -4,21 +4,21 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { JWT_SECRET } from './auth.contants';
 import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JWTStrategy } from './strategies/jwt.strategy';
+import { JwtConfig } from './jwt/jwt.config';
+import { JwtBlacklistService } from '../jwt-blacklist/jwt-blacklist.service';
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
+    JwtModule.registerAsync({
+      useClass: JwtConfig,
     }),
     UsersModule,
     PassportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JWTStrategy],
+  providers: [JwtBlacklistService, AuthService, LocalStrategy, JWTStrategy],
 })
 export class AuthModule {}
