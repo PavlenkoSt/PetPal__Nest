@@ -23,6 +23,7 @@ export class AuthController {
 
   @Public()
   @UseGuards(LocalAuthGuard)
+  @HttpCode(200)
   @Post('/login')
   async login(
     @User() user: ICurrentUser,
@@ -42,6 +43,7 @@ export class AuthController {
   }
 
   @Public()
+  @HttpCode(200)
   @Post('/refresh-token')
   async refreshToken(
     @Req() request: Request,
