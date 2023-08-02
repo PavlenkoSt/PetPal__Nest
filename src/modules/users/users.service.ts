@@ -15,8 +15,12 @@ import { UsersRepository } from './users.repository';
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async findOneByLogin(login: string) {
-    return await this.usersRepository.getByLogin(login);
+  findOneByLogin(login: string) {
+    return this.usersRepository.getByLogin(login);
+  }
+
+  getProfile(id: string) {
+    return this.usersRepository.getByIdWithPets(id);
   }
 
   async findOneById(id: string) {
@@ -25,10 +29,6 @@ export class UsersService {
     const { passwordHash, ...rest } = mongoParseObject(user);
 
     return rest;
-  }
-
-  async getProfile(id: string) {
-    return await this.usersRepository.getByIdWithPets(id);
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {

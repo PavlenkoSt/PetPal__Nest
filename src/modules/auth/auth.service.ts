@@ -3,11 +3,11 @@ import { JwtService } from '@nestjs/jwt';
 
 import { comparePassword } from './util/password-hash.util';
 import { UsersService } from '../users/users.service';
-import { RegisterDTO } from './dto/register.dto';
 import { ICurrentUser } from 'src/decorators/user.decorator';
 import { mongoParseObject } from 'src/db/mongo-parse-object.util';
 import { JwtBlacklistService } from '../jwt-blacklist/jwt-blacklist.service';
 import { IDecodedToken } from 'src/interfaces/IDecodedToken';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -45,7 +45,7 @@ export class AuthService {
     };
   }
 
-  async register(registerDto: RegisterDTO) {
+  async register(registerDto: CreateUserDto) {
     const user = await this.usersService.create(registerDto);
 
     return await this.login({ login: user.login, id: user.id });

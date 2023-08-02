@@ -14,8 +14,8 @@ import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Public } from 'src/decorators/public.decorator';
 
 import { AuthService } from './auth.service';
-import { RegisterDTO } from './dto/register.dto';
 import { ICurrentUser, User } from 'src/decorators/user.decorator';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -38,7 +38,7 @@ export class AuthController {
 
   @Public()
   @Post('/register')
-  create(@Body() registerDto: RegisterDTO) {
+  create(@Body() registerDto: CreateUserDto) {
     return this.authService.register(registerDto);
   }
 

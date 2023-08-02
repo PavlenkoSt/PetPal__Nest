@@ -32,4 +32,20 @@ export class UsersRepository {
   getByLogin(login: string) {
     return this.userModel.findOne({ login });
   }
+
+  addPet(userId: string, petId: string) {
+    return this.userModel.findByIdAndUpdate(userId, {
+      $push: {
+        pets: petId,
+      },
+    });
+  }
+
+  removePet(userId: string, petId: string) {
+    return this.userModel.findByIdAndUpdate(userId, {
+      $pull: {
+        pets: petId,
+      },
+    });
+  }
 }
