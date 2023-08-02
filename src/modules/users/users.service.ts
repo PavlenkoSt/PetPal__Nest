@@ -1,27 +1,26 @@
-import { ObjectId } from 'mongodb';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 
 import { ConflictException } from 'src/exceptions/conflict.exception';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+
 import { hashPassword } from '../auth/util/password-hash.util';
-import { User, UserDocument } from './schemas/user.schema';
-import { LOGIN_ALREADY_EXITS } from './users.constants';
 import { mongoParseObject } from 'src/db/mongo-parse-object.util';
+import { UserDocument } from './schemas/user.schema';
+import { LOGIN_ALREADY_EXITS } from './users.constants';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   async findOneByLogin(login: string) {
-    return await this.userModel.findOne({ login });
+    return await this.usersRepository.getByLogin(login);
   }
 
   async findOneById(id: string) {
-    const user = await this.userModel.findById(id);
+    const user = await this.usersRepository.getById(id);
 
     const { passwordHash, ...rest } = mongoParseObject(user);
 
@@ -29,13 +28,7 @@ export class UsersService {
   }
 
   async getProfile(id: string) {
-    const profile = await this.userModel
-      .findById(new ObjectId(id), { passwordHash: false })
-      .populate('pets', {
-        ownerId: false,
-      });
-
-    return profile;
+    return await this.usersRepository.getByIdWithPets(id);
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
@@ -44,7 +37,7 @@ export class UsersService {
     const passwordHash = await hashPassword(password);
 
     try {
-      return await this.userModel.create({ ...rest, passwordHash });
+      return await this.usersRepository.create({ ...rest, passwordHash });
     } catch (e) {
       if (e.code === 11000) {
         throw new ConflictException(LOGIN_ALREADY_EXITS);
@@ -62,7 +55,7 @@ export class UsersService {
     }
 
     try {
-      return await this.userModel.findByIdAndUpdate(userId, updateUserDto);
+      return await this.usersRepository.update(userId, updateUserDto);
     } catch (e) {
       if (e.code === 11000) {
         throw new ConflictException(LOGIN_ALREADY_EXITS);
