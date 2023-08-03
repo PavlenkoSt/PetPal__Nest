@@ -11,13 +11,11 @@ export class LoggerMiddleware implements NestMiddleware {
     res.on('finish', () => {
       const { statusCode } = res;
 
-      this.logger.log(
-        `${method} | ${originalUrl} | ${statusCode} | user id: ${
-          res.req.user?.id?.toString() || 'null'
-        } | request body: ${JSON.stringify(
-          body,
-        )} | ${new Date().toISOString()}`,
-      );
+      const log = `${method} | ${originalUrl} | ${statusCode} | user id: ${
+        res.req.user?.id?.toString() || 'null'
+      } | request body: ${JSON.stringify(body)} | ${new Date().toISOString()}`;
+
+      this.logger.log(log);
     });
 
     next();

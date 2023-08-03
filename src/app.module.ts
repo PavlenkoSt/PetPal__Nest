@@ -7,6 +7,7 @@ import configuration from './config/configuration';
 import { mongooseConnectionFactory } from './db/mongoose.factory';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { S3LoggerService } from './aws/s3-logger.service';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
@@ -39,6 +40,7 @@ import { JwtBlacklistService } from './modules/jwt-blacklist/jwt-blacklist.servi
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    S3LoggerService,
   ],
 })
 export class AppModule implements NestModule {
