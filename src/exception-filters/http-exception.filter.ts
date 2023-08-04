@@ -8,11 +8,14 @@ import {
 } from '@nestjs/common';
 
 import { S3LoggerService } from 'src/aws/s3-logger.service';
+import { ErrorLogsService } from 'src/modules/error-logs/error-logs.service';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   constructor(
     @Inject(S3LoggerService) private readonly s3LoggerService: S3LoggerService,
+    @Inject(ErrorLogsService)
+    private readonly errorLogsService: ErrorLogsService,
   ) {}
 
   catch(exception: any, host: ArgumentsHost) {
@@ -35,12 +38,23 @@ export class HttpExceptionFilter implements ExceptionFilter {
         method: request.method,
         message: exception.message || 'Internal server error',
         stack: exception.stack,
+        body: JSON.stringify(request.body || {}),
       };
 
-      this.s3LoggerService.saveLogToS3(
-        new Date().toDateString() + '.txt',
-        JSON.stringify(errorResponse),
-      );
+      this.errorLogsService.create({
+        dateTime: errorResponse.timestamp,
+        message: errorResponse.message,
+        method: errorResponse.method,
+        path: errorResponse.path,
+        stack: errorResponse.stack,
+        statusCode: errorResponse.statusCode,
+        body: errorResponse.body,
+      });
+
+      // this.s3LoggerService.saveLogToS3(
+      //   new Date().toDateString() + '.txt',
+      //   JSON.stringify(errorResponse),
+      // );
     }
 
     response.status(status).json({
