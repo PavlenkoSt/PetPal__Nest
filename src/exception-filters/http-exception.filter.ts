@@ -30,7 +30,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     const message = exception.message || 'Internal server error';
 
-    if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
+    if (status >= 500) {
       const errorResponse = {
         statusCode: status,
         timestamp: new Date().toISOString(),

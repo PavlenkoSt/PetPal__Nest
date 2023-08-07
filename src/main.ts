@@ -22,6 +22,7 @@ async function bootstrap() {
   );
   app.use(cookieParser());
   app.enableCors();
+  app.enableShutdownHooks();
 
   await app.listen(configuration().PORT || 3000);
 }

@@ -18,6 +18,7 @@ import { PetsMediaModule } from './modules/pets-media/pets-media.module';
 import { JwtBlacklistModule } from './modules/jwt-blacklist/jwt-blacklist.module';
 import { JwtBlacklistService } from './modules/jwt-blacklist/jwt-blacklist.service';
 import { ErrorLogsModule } from './modules/error-logs/error-logs.module';
+import { HealthCheckModule } from './modules/health-check/health-check.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ErrorLogsModule } from './modules/error-logs/error-logs.module';
     PetsMediaModule,
     JwtBlacklistModule,
     ErrorLogsModule,
+    HealthCheckModule,
   ],
   providers: [
     JwtBlacklistService,
