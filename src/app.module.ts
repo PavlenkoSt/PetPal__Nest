@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { APP_GUARD } from '@nestjs/core';
 
 import configuration from './config/configuration';
+import { validate } from './config/configuration.validate';
 import { mongooseConnectionFactory } from './db/mongoose.factory';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
@@ -23,6 +24,8 @@ import { ErrorLogsModule } from './modules/error-logs/error-logs.module';
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
+      cache: true,
+      validate,
     }),
     MongooseModule.forRootAsync({
       useFactory: mongooseConnectionFactory,

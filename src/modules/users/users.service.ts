@@ -47,7 +47,7 @@ export class UsersService {
     }
   }
 
-  async update(userId: number, updateUserDto: UpdateUserDto) {
+  async update(userId: string, updateUserDto: UpdateUserDto) {
     if (updateUserDto.password) {
       const passwordHash = await hashPassword(updateUserDto.password);
 

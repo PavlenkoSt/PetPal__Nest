@@ -4,16 +4,16 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { User } from './schemas/user.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
+import { IUserWithHashedPassword } from './interfaces/IUserWithHashedPassword';
 
 export class UsersRepository {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  create(user: Omit<CreateUserDto, 'password'> & { passwordHash: string }) {
+  create(user: IUserWithHashedPassword) {
     return this.userModel.create(user);
   }
 
-  update(userId: number, updateUserDto: UpdateUserDto) {
+  update(userId: string, updateUserDto: UpdateUserDto) {
     return this.userModel.findByIdAndUpdate(userId, updateUserDto);
   }
 

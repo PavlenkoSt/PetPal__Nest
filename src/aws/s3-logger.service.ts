@@ -2,20 +2,20 @@ import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 
-import { ConfigurationEnum } from '../config/configuration';
+import { IConfigService } from '../config/configuration';
 
 @Injectable()
 export class S3LoggerService {
   private s3: S3;
 
-  constructor(private configService: ConfigService) {
-    const region = this.configService.get<string>(ConfigurationEnum.AWS_REGION);
-    const accessKeyId = this.configService.get<string>(
-      ConfigurationEnum.AWS_ACCESS_KEY_ID,
-    );
-    const secretAccessKey = this.configService.get<string>(
-      ConfigurationEnum.AWS_SECRET_ACCESS_KEY,
-    );
+  constructor(private configService: ConfigService<IConfigService>) {
+    const region = this.configService.get('AWS_REGION', { infer: true });
+    const accessKeyId = this.configService.get('AWS_ACCESS_KEY_ID', {
+      infer: true,
+    });
+    const secretAccessKey = this.configService.get('AWS_SECRET_ACCESS_KEY', {
+      infer: true,
+    });
 
     if (!accessKeyId || !secretAccessKey)
       throw new Error('AWS S3 connection failed');
@@ -24,9 +24,9 @@ export class S3LoggerService {
   }
 
   async saveLogToS3(key: string, data: string): Promise<void> {
-    const Bucket = this.configService.get<string>(
-      ConfigurationEnum.AWS_S3_ERRORS_BUCKET,
-    );
+    const Bucket = this.configService.get('AWS_S3_ERRORS_BUCKET', {
+      infer: true,
+    });
 
     if (!Bucket) throw new Error('Bucket name not provided');
 
