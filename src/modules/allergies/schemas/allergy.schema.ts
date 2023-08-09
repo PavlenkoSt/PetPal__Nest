@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Schema as NativeSchema } from 'mongoose';
 
-export type AlergyDocument = HydratedDocument<Alergy>;
+export type AlergyDocument = HydratedDocument<Allergy>;
 
 @Schema()
-export class Alergy {
+export class Allergy {
   @Prop()
   name: string;
 
@@ -19,4 +19,4 @@ export class Alergy {
   petId: string;
 }
 
-export const AlergySchema = SchemaFactory.createForClass(Alergy);
+export const AllergySchema = SchemaFactory.createForClass(Allergy);

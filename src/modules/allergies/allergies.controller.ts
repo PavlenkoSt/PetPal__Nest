@@ -1,5 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+
 import { AllergiesService } from './allergies.service';
+
 import { CreateAllergyDto } from './dto/create-allergy.dto';
 import { UpdateAllergyDto } from './dto/update-allergy.dto';
 
@@ -12,23 +22,23 @@ export class AllergiesController {
     return this.allergiesService.create(createAllergyDto);
   }
 
-  @Get()
-  findAll() {
-    return this.allergiesService.findAll();
+  @Get('byPetId/:petId')
+  findAll(@Param('petId') id: string) {
+    return this.allergiesService.findAll(id);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.allergiesService.findOne(+id);
+    return this.allergiesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAllergyDto: UpdateAllergyDto) {
-    return this.allergiesService.update(+id, updateAllergyDto);
+    return this.allergiesService.update(id, updateAllergyDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.allergiesService.remove(+id);
+    return this.allergiesService.remove(id);
   }
 }
