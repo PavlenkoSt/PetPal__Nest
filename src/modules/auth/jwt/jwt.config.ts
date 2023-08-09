@@ -16,7 +16,7 @@ export class JwtConfig implements JwtOptionsFactory {
     return {
       secret: JWT_SECRET,
       signOptions: {
-        expiresIn: isProduction ? '1h' : '30s',
+        expiresIn: isProduction ? '1h' : '1d',
       },
     };
   }
