@@ -2,7 +2,6 @@ import { ConfigService } from '@nestjs/config';
 import { MongooseModuleFactoryOptions } from '@nestjs/mongoose';
 
 import { IConfigService } from 'src/config/configuration';
-import { mongoGenerateURL } from './mongo-generate-url.util';
 
 export const mongooseConnectionFactory = (
   configService: ConfigService<IConfigService>,
@@ -11,6 +10,6 @@ export const mongooseConnectionFactory = (
   const port = configService.get('DB_PORT', { infer: true });
 
   return {
-    uri: mongoGenerateURL(host, port),
+    uri: `mongodb://${host}:${port}/PetPal`,
   };
 };
