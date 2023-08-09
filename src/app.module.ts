@@ -13,12 +13,14 @@ import { S3LoggerService } from './aws/s3-logger.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { PetsModule } from './modules/pets/pets.module';
-import { PetsHealthModule } from './modules/pets-health/pets-health.module';
 import { PetsMediaModule } from './modules/pets-media/pets-media.module';
 import { JwtBlacklistModule } from './modules/jwt-blacklist/jwt-blacklist.module';
 import { JwtBlacklistService } from './modules/jwt-blacklist/jwt-blacklist.service';
 import { ErrorLogsModule } from './modules/error-logs/error-logs.module';
 import { HealthCheckModule } from './modules/health-check/health-check.module';
+import { MedicationsModule } from './modules/medications/medications.module';
+import { VaccinationsModule } from './modules/vaccinations/vaccinations.module';
+import { AllergiesModule } from './modules/allergies/allergies.module';
 
 @Module({
   imports: [
@@ -35,11 +37,13 @@ import { HealthCheckModule } from './modules/health-check/health-check.module';
     AuthModule,
     UsersModule,
     PetsModule,
-    PetsHealthModule,
     PetsMediaModule,
     JwtBlacklistModule,
     ErrorLogsModule,
     HealthCheckModule,
+    MedicationsModule,
+    VaccinationsModule,
+    AllergiesModule,
   ],
   providers: [
     JwtBlacklistService,

@@ -20,6 +20,7 @@ async function bootstrap() {
   app.useGlobalFilters(
     new HttpExceptionFilter(s3LoggerService, errorLogsService),
   );
+
   app.use(cookieParser());
   app.enableCors();
   app.enableShutdownHooks();

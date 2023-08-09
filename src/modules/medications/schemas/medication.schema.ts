@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Schema as NativeSchema } from 'mongoose';
 
 export type MedicationDocument = HydratedDocument<Medication>;
 
@@ -10,6 +10,13 @@ export class Medication {
 
   @Prop()
   description: string;
+
+  @Prop({
+    required: true,
+    ref: 'Pet',
+    type: NativeSchema.Types.ObjectId,
+  })
+  petId: string;
 }
 
 export const MedicationSchema = SchemaFactory.createForClass(Medication);
