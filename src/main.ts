@@ -16,7 +16,7 @@ async function bootstrap() {
   const errorLogsService = app.get(ErrorLogsService);
 
   app.setGlobalPrefix('api');
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useGlobalFilters(
     new HttpExceptionFilter(s3LoggerService, errorLogsService),
   );
