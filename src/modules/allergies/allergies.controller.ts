@@ -7,37 +7,50 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { AllergiesService } from './allergies.service';
 
 import { CreateAllergyDto } from './dto/create-allergy.dto';
 import { UpdateAllergyDto } from './dto/update-allergy.dto';
+import { AllergiesResponses } from './allergies.responses';
 
 @Controller('allergies')
+@ApiTags('allergies')
+@ApiBearerAuth()
 export class AllergiesController {
   constructor(private readonly allergiesService: AllergiesService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create allergy for pet' })
+  @AllergiesResponses.allergyCreated
   create(@Body() createAllergyDto: CreateAllergyDto) {
     return this.allergiesService.create(createAllergyDto);
   }
 
   @Get('byPetId/:petId')
+  @AllergiesResponses.allergies
+  @ApiOperation({ summary: 'Get all allergies by pet id' })
   findAll(@Param('petId') id: string) {
     return this.allergiesService.findAll(id);
   }
 
   @Get(':id')
+  @AllergiesResponses.allergy
+  @ApiOperation({ summary: 'Get allergy by id' })
   findOne(@Param('id') id: string) {
     return this.allergiesService.findOne(id);
   }
 
   @Patch(':id')
+  @AllergiesResponses.allergy
+  @ApiOperation({ summary: 'Update allergy' })
   update(@Param('id') id: string, @Body() updateAllergyDto: UpdateAllergyDto) {
     return this.allergiesService.update(id, updateAllergyDto);
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete allergy' })
   remove(@Param('id') id: string) {
     return this.allergiesService.remove(id);
   }

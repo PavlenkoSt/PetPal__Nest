@@ -9,6 +9,14 @@ import {
   Req,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { HttpStatusCode } from 'axios';
 
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Public } from 'src/decorators/public.decorator';
@@ -16,14 +24,19 @@ import { Public } from 'src/decorators/public.decorator';
 import { AuthService } from './auth.service';
 import { ICurrentUser, User } from 'src/decorators/user.decorator';
 import { CreateUserDto } from '../users/dto/create-user.dto';
+import { UserLoginDto } from './dto/user-login.dto';
+import { AuthResponses } from './auth.responses';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Public()
   @UseGuards(LocalAuthGuard)
-  @HttpCode(200)
+  @HttpCode(HttpStatusCode.Ok)
+  @ApiBody({ type: UserLoginDto })
+  @AuthResponses.login
   @Post('/login')
   async login(
     @User() user: ICurrentUser,
@@ -37,13 +50,16 @@ export class AuthController {
   }
 
   @Public()
+  @HttpCode(HttpStatusCode.Ok)
+  @AuthResponses.login
   @Post('/register')
   create(@Body() registerDto: CreateUserDto) {
     return this.authService.register(registerDto);
   }
 
   @Public()
-  @HttpCode(200)
+  @HttpCode(HttpStatusCode.Ok)
+  @AuthResponses.login
   @Post('/refresh-token')
   async refreshToken(
     @Req() request: Request,
@@ -59,7 +75,8 @@ export class AuthController {
   }
 
   @Post('/logout')
-  @HttpCode(200)
+  @HttpCode(HttpStatusCode.Ok)
+  @ApiBearerAuth()
   logout(
     @Headers() headers: { authorization: string },
     @Res({ passthrough: true }) response: Response,

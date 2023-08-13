@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import configuration from './config/configuration';
 
@@ -24,6 +25,15 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors();
   app.enableShutdownHooks();
+
+  const config = new DocumentBuilder()
+    .setTitle('PetPal API')
+    .setDescription('')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('swagger', app, document);
 
   await app.listen(configuration().PORT || 3000);
 }
