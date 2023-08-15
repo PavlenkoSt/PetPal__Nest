@@ -10,7 +10,7 @@ const user = {
 
 export const UsersResponses = {
   userWithPets: ApiResponse({
-    status: HttpStatusCode.Created,
+    status: HttpStatusCode.Ok,
     schema: {
       example: { ...user, pets: [] },
     },
