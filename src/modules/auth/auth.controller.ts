@@ -9,14 +9,9 @@ import {
   Req,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOkResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { HttpStatusCode } from 'axios';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Public } from 'src/decorators/public.decorator';
@@ -34,6 +29,7 @@ export class AuthController {
 
   @Public()
   @UseGuards(LocalAuthGuard)
+  @UseGuards(ThrottlerGuard)
   @HttpCode(HttpStatusCode.Ok)
   @ApiBody({ type: UserLoginDto })
   @AuthResponses.login
@@ -50,6 +46,7 @@ export class AuthController {
   }
 
   @Public()
+  @UseGuards(ThrottlerGuard)
   @HttpCode(HttpStatusCode.Ok)
   @AuthResponses.login
   @Post('/register')
