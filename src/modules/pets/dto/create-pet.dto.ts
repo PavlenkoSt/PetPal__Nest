@@ -9,7 +9,7 @@ export class CreatePetDto {
 
   @IsDateString()
   @ApiProperty()
-  dateOfBirth: Date;
+  dateOfBirth: string;
 
   @IsString()
   @Length(2, 50)
