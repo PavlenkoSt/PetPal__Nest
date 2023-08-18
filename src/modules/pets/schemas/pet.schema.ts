@@ -23,11 +23,11 @@ export class Pet {
   ownerId: NativeSchema.Types.ObjectId;
 
   @Prop({
-    type: [{ type: NativeSchema.Types.ObjectId, ref: 'Vaccination' }],
-    unique: true,
+    type: [NativeSchema.Types.ObjectId],
+    ref: 'Vaccination',
     default: [],
   })
-  vaccinationIds: NativeSchema.Types.ObjectId[];
+  vaccinationIds: [NativeSchema.Types.ObjectId];
 }
 
 export const PetSchema = SchemaFactory.createForClass(Pet);
