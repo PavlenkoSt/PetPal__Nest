@@ -9,7 +9,7 @@ const getClient = async () => {
 };
 
 // dont forget to specify collection
-const COLLECTION_NAME = 'users';
+const COLLECTION_NAME = 'pets';
 
 export const up = async () => {
   const client = await getClient();
@@ -21,7 +21,7 @@ export const up = async () => {
 
   const docs = await collection
     .find({
-      pets: {
+      vaccinationIds: {
         $exists: false,
       },
     })
@@ -30,7 +30,7 @@ export const up = async () => {
   docs.forEach((doc) => {
     const update = {
       $set: {
-        pets: [],
+        vaccinationIds: [],
       },
     };
 
@@ -59,18 +59,12 @@ export const down = async () => {
 
   const collection = db.collection(COLLECTION_NAME);
 
-  const docs = await collection
-    .find({
-      pets: {
-        $exists: true,
-      },
-    })
-    .toArray();
+  const docs = await collection.find({}).toArray();
 
   docs.forEach((doc) => {
     const update = {
       $unset: {
-        pets: 1,
+        vaccinationIds: 1,
       },
     };
 

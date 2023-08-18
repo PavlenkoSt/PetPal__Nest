@@ -25,6 +25,7 @@ export class Pet {
   @Prop({
     type: [{ type: NativeSchema.Types.ObjectId, ref: 'Vaccination' }],
     unique: true,
+    default: [],
   })
   vaccinationIds: NativeSchema.Types.ObjectId[];
 }
