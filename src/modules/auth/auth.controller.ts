@@ -6,21 +6,22 @@ import {
   Res,
   Headers,
   HttpCode,
-  Req,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { HttpStatusCode } from 'axios';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Public } from 'src/decorators/public.decorator';
+import { Cookie } from 'src/decorators/cookie.decorator';
 
 import { AuthService } from './auth.service';
 import { ICurrentUser, User } from 'src/decorators/user.decorator';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
 import { AuthResponses } from './auth.responses';
+import { REFRESH_TOKEN_COOKIE } from './auth.contants';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -40,7 +41,7 @@ export class AuthController {
   ) {
     const { refresh_token, ...rest } = await this.authService.login(user);
 
-    response.cookie('refresh_token', refresh_token, { httpOnly: true });
+    response.cookie(REFRESH_TOKEN_COOKIE, refresh_token, { httpOnly: true });
 
     return rest;
   }
@@ -59,14 +60,15 @@ export class AuthController {
   @AuthResponses.login
   @Post('/refresh-token')
   async refreshToken(
-    @Req() request: Request,
-    @Res({ passthrough: true }) response: Response,
+    @Cookie(REFRESH_TOKEN_COOKIE) refreshTokenCookie,
+    @Res({ passthrough: true })
+    response: Response,
   ) {
     const { refresh_token, ...rest } = await this.authService.refreshToken(
-      request.cookies.refresh_token,
+      refreshTokenCookie,
     );
 
-    response.cookie('refresh_token', refresh_token, { httpOnly: true });
+    response.cookie(REFRESH_TOKEN_COOKIE, refresh_token, { httpOnly: true });
 
     return rest;
   }
