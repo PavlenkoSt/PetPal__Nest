@@ -23,13 +23,9 @@ export class VaccinationsRepository {
   }
 
   update(id: string, updateVaccinationDto: UpdateVaccinationDto) {
-    return this.vaccinationModel.findOneAndUpdate(
-      { id },
-      updateVaccinationDto,
-      {
-        new: true,
-      },
-    );
+    return this.vaccinationModel.findByIdAndUpdate(id, updateVaccinationDto, {
+      new: true,
+    });
   }
 
   deleteAllByPetId(petId: string) {
