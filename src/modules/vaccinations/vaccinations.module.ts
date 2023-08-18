@@ -14,5 +14,6 @@ import { Vaccination, VaccinationSchema } from './schemas/vaccination.schema';
   ],
   controllers: [VaccinationsController],
   providers: [VaccinationsService, VaccinationsRepository],
+  exports: [VaccinationsRepository],
 })
 export class VaccinationsModule {}

@@ -7,12 +7,14 @@ import { ICurrentUser } from 'src/decorators/user.decorator';
 import { PET_NOT_FOUND } from './pets.constants';
 import { PetsRepository } from './pets.repository';
 import { UsersRepository } from '../users/users.repository';
+import { VaccinationsRepository } from '../vaccinations/vaccinations.repository';
 
 @Injectable()
 export class PetsService {
   constructor(
     private readonly petsRepository: PetsRepository,
     private readonly usersRepository: UsersRepository,
+    private readonly vaccinationsRepository: VaccinationsRepository,
   ) {}
 
   async create(createPetDto: CreatePetDto, currentUser: ICurrentUser) {
@@ -46,6 +48,7 @@ export class PetsService {
         message: PET_NOT_FOUND,
       });
     } else {
+      await this.vaccinationsRepository.deleteAllByPetId(id);
       await this.usersRepository.removePet(String(user.id), id);
     }
 

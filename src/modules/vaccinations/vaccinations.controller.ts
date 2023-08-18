@@ -36,6 +36,7 @@ export class VaccinationsController {
 
   @Get(':id')
   @VaccinationsResponses.vaccination
+  @VaccinationsResponses.vaccinationNotFound
   @ApiOperation({ summary: 'Get vaccination by id' })
   findOne(@Param('id') id: string) {
     return this.vaccinationsService.findOne(id);
@@ -43,6 +44,7 @@ export class VaccinationsController {
 
   @Patch(':id')
   @VaccinationsResponses.vaccination
+  @VaccinationsResponses.vaccinationNotFound
   @ApiOperation({ summary: 'Update vaccination' })
   update(
     @Param('id') id: string,
@@ -52,7 +54,8 @@ export class VaccinationsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete vaccination' })
+  @VaccinationsResponses.noContent
+  @VaccinationsResponses.vaccinationNotFound
   delete(@Param('id') id: string) {
     return this.vaccinationsService.delete(id);
   }

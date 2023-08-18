@@ -7,6 +7,7 @@ import { Pet, PetSchema } from './schemas/pet.schema';
 import { User, UserSchema } from '../users/schemas/user.schema';
 import { PetsRepository } from './pets.repository';
 import { UsersModule } from '../users/users.module';
+import { VaccinationsModule } from '../vaccinations/vaccinations.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersModule } from '../users/users.module';
       { name: User.name, schema: UserSchema },
     ]),
     UsersModule,
+    VaccinationsModule,
   ],
   controllers: [PetsController],
   providers: [PetsService, PetsRepository],

@@ -1,6 +1,8 @@
 import { ApiResponse } from '@nestjs/swagger';
-import { CreateVaccinationDto } from './dto/create-vaccination.dto';
 import { HttpStatusCode } from 'axios';
+
+import { CreateVaccinationDto } from './dto/create-vaccination.dto';
+import { VACCINATION_NOT_FOUND } from './vaccinations.constants';
 
 type IVaccinationInResponse = CreateVaccinationDto & { id: string };
 
@@ -24,5 +26,17 @@ export const VaccinationsResponses = {
     schema: {
       example: [vaccination, vaccination],
     },
+  }),
+  vaccinationNotFound: ApiResponse({
+    status: HttpStatusCode.NotFound,
+    schema: {
+      example: {
+        statusCode: HttpStatusCode.NotFound,
+        message: VACCINATION_NOT_FOUND,
+      },
+    },
+  }),
+  noContent: ApiResponse({
+    status: HttpStatusCode.NoContent,
   }),
 };
