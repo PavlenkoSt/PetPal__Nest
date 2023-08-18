@@ -39,7 +39,7 @@ describe('PetsService', () => {
   it('pet creation', async () => {
     const breed = 'hasky';
     const name = 'Jessy';
-    const dateOfBirth = new Date();
+    const dateOfBirth = new Date().toISOString();
 
     const pet = await service.create({ breed, dateOfBirth, name }, user);
 
@@ -66,7 +66,7 @@ describe('PetsService', () => {
     const updatePetDto: UpdatePetDto = {
       name: 'Belka',
       breed: 'Shpits',
-      dateOfBirth: new Date(2008, 1, 1),
+      dateOfBirth: new Date(2008, 1, 1).toISOString(),
     };
 
     const editedPet = await service.update(id, updatePetDto);
