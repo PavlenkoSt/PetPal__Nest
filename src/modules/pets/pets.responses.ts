@@ -1,7 +1,11 @@
 import { ApiResponse } from '@nestjs/swagger';
 import { HttpStatusCode } from 'axios';
 
-const pet = {
+import { CreatePetDto } from './dto/create-pet.dto';
+
+type IPetInResponse = CreatePetDto & { id: string };
+
+const pet: IPetInResponse = {
   id: 'string',
   name: 'string',
   dateOfBirth: '2023-05-15T20:20:20',

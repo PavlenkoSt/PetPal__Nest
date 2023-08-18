@@ -19,7 +19,7 @@ export const petsRepositoryMock = {
   update: jest.fn((id: string, updatePetDto: UpdatePetDto) => {
     const pet = {
       id,
-      dateOfBirth: new Date(2010, 4, 6),
+      dateOfBirth: new Date(2010, 4, 6).toISOString(),
       name: 'Morgan',
       breed: 'Layka',
     };
