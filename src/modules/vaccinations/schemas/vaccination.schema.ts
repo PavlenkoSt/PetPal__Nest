@@ -11,6 +11,9 @@ export class Vaccination {
   @Prop({ required: false })
   description: string;
 
+  @Prop({ required: true })
+  date: string;
+
   @Prop({
     required: true,
     ref: 'Pet',

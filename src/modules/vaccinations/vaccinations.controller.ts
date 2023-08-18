@@ -1,34 +1,59 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import { VaccinationsService } from './vaccinations.service';
 import { CreateVaccinationDto } from './dto/create-vaccination.dto';
 import { UpdateVaccinationDto } from './dto/update-vaccination.dto';
+import { VaccinationsResponses } from './vaccinations.responses';
 
+@ApiTags('vaccinations')
+@ApiBearerAuth()
 @Controller('vaccinations')
 export class VaccinationsController {
   constructor(private readonly vaccinationsService: VaccinationsService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create vaccination' })
+  @VaccinationsResponses.vaccination
   create(@Body() createVaccinationDto: CreateVaccinationDto) {
     return this.vaccinationsService.create(createVaccinationDto);
   }
 
-  @Get()
-  findAll() {
-    return this.vaccinationsService.findAll();
+  @Get('byPetId/:petId')
+  @VaccinationsResponses.vaccinations
+  @ApiOperation({ summary: 'Get vaccination by pet id' })
+  findAll(@Param('petId') petId: string) {
+    return this.vaccinationsService.findAllByPetId(petId);
   }
 
   @Get(':id')
+  @VaccinationsResponses.vaccination
+  @ApiOperation({ summary: 'Get vaccination by id' })
   findOne(@Param('id') id: string) {
-    return this.vaccinationsService.findOne(+id);
+    return this.vaccinationsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVaccinationDto: UpdateVaccinationDto) {
-    return this.vaccinationsService.update(+id, updateVaccinationDto);
+  @VaccinationsResponses.vaccination
+  @ApiOperation({ summary: 'Update vaccination' })
+  update(
+    @Param('id') id: string,
+    @Body() updateVaccinationDto: UpdateVaccinationDto,
+  ) {
+    return this.vaccinationsService.update(id, updateVaccinationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vaccinationsService.remove(+id);
+  @ApiOperation({ summary: 'Delete vaccination' })
+  delete(@Param('id') id: string) {
+    return this.vaccinationsService.delete(id);
   }
 }

@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
+
 import { CreateVaccinationDto } from './dto/create-vaccination.dto';
 import { UpdateVaccinationDto } from './dto/update-vaccination.dto';
+import { VaccinationsRepository } from './vaccinations.repository';
 
 @Injectable()
 export class VaccinationsService {
+  constructor(
+    private readonly vaccinationsRepository: VaccinationsRepository,
+  ) {}
+
   create(createVaccinationDto: CreateVaccinationDto) {
-    return 'This action adds a new vaccination';
+    return this.vaccinationsRepository.create(createVaccinationDto);
   }
 
-  findAll() {
-    return `This action returns all vaccinations`;
+  findAllByPetId(petId: string) {
+    return this.vaccinationsRepository.getAllByPetId(petId);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vaccination`;
+  findOne(id: string) {
+    return this.vaccinationsRepository.getOneById(id);
   }
 
-  update(id: number, updateVaccinationDto: UpdateVaccinationDto) {
-    return `This action updates a #${id} vaccination`;
+  update(id: string, updateVaccinationDto: UpdateVaccinationDto) {
+    return this.vaccinationsRepository.update(id, updateVaccinationDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} vaccination`;
+  deleteAllByPetId(petId: string) {
+    return this.vaccinationsRepository.deleteAllByPetId(petId);
+  }
+
+  delete(id: string) {
+    return this.vaccinationsRepository.delete(id);
   }
 }
