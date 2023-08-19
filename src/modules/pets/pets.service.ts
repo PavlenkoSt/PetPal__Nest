@@ -41,7 +41,7 @@ export class PetsService {
   }
 
   async remove(id: string, user: ICurrentUser) {
-    const res = await this.petsRepository.removeByIdAndOwnerId(user.id, id);
+    const res = await this.petsRepository.removeByIdAndOwnerId(id, user.id);
 
     if (!res) {
       throw new NotFoundException({

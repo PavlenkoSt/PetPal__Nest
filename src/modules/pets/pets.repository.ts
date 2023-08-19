@@ -8,7 +8,7 @@ import { CreatePetDto } from './dto/create-pet.dto';
 export class PetsRepository {
   constructor(@InjectModel(Pet.name) private petModel: Model<Pet>) {}
 
-  removeByIdAndOwnerId(id: ObjectId, ownerId: string) {
+  async removeByIdAndOwnerId(id: string, ownerId: ObjectId) {
     return this.petModel.findOneAndDelete({
       _id: id,
       ownerId,
