@@ -13,6 +13,7 @@ import { VaccinationsService } from './vaccinations.service';
 import { CreateVaccinationDto } from './dto/create-vaccination.dto';
 import { UpdateVaccinationDto } from './dto/update-vaccination.dto';
 import { VaccinationsResponses } from './vaccinations.responses';
+import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 
 @ApiTags('vaccinations')
 @ApiBearerAuth()
@@ -30,7 +31,7 @@ export class VaccinationsController {
   @Get('byPetId/:petId')
   @VaccinationsResponses.vaccinations
   @ApiOperation({ summary: 'Get vaccination by pet id' })
-  findAll(@Param('petId') petId: string) {
+  findAll(@Param('petId', IdValidationPipe) petId: string) {
     return this.vaccinationsService.findAllByPetId(petId);
   }
 
@@ -38,7 +39,7 @@ export class VaccinationsController {
   @VaccinationsResponses.vaccination
   @VaccinationsResponses.vaccinationNotFound
   @ApiOperation({ summary: 'Get vaccination by id' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', IdValidationPipe) id: string) {
     return this.vaccinationsService.findOne(id);
   }
 
@@ -47,7 +48,7 @@ export class VaccinationsController {
   @VaccinationsResponses.vaccinationNotFound
   @ApiOperation({ summary: 'Update vaccination' })
   update(
-    @Param('id') id: string,
+    @Param('id', IdValidationPipe) id: string,
     @Body() updateVaccinationDto: UpdateVaccinationDto,
   ) {
     return this.vaccinationsService.update(id, updateVaccinationDto);
@@ -56,7 +57,7 @@ export class VaccinationsController {
   @Delete(':id')
   @VaccinationsResponses.noContent
   @VaccinationsResponses.vaccinationNotFound
-  delete(@Param('id') id: string) {
+  delete(@Param('id', IdValidationPipe) id: string) {
     return this.vaccinationsService.delete(id);
   }
 }

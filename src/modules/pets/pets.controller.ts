@@ -14,6 +14,7 @@ import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
 import { ICurrentUser, User } from 'src/decorators/user.decorator';
 import { PetsResponses } from './pets.responses';
+import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 
 @Controller('pets')
 @ApiTags('pets')
@@ -38,20 +39,26 @@ export class PetsController {
   @Get(':id')
   @ApiOperation({ summary: 'Get pet by id' })
   @PetsResponses.pet
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', IdValidationPipe) id: string) {
     return this.petsService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update pet' })
   @PetsResponses.pet
-  update(@Param('id') id: string, @Body() updatePetDto: UpdatePetDto) {
+  update(
+    @Param('id', IdValidationPipe) id: string,
+    @Body() updatePetDto: UpdatePetDto,
+  ) {
     return this.petsService.update(id, updatePetDto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete pet' })
-  remove(@Param('id') id: string, @User() user: ICurrentUser) {
+  remove(
+    @Param('id', IdValidationPipe) id: string,
+    @User() user: ICurrentUser,
+  ) {
     return this.petsService.remove(id, user);
   }
 }

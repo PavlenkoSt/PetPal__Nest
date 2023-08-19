@@ -4,6 +4,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { ICurrentUser, User } from 'src/decorators/user.decorator';
 import { UsersResponses } from './users.responses';
+import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 
 @Controller('users')
 @ApiBearerAuth()
@@ -21,7 +22,7 @@ export class UsersController {
   @Get(':id')
   @ApiOperation({ summary: 'Get user by id' })
   @UsersResponses.userWithPets
-  getProfileById(@Param() id: string) {
+  getProfileById(@Param('id', IdValidationPipe) id: string) {
     return this.usersService.getProfile(id);
   }
 }

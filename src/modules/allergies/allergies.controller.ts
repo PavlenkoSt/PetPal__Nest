@@ -14,6 +14,7 @@ import { AllergiesService } from './allergies.service';
 import { CreateAllergyDto } from './dto/create-allergy.dto';
 import { UpdateAllergyDto } from './dto/update-allergy.dto';
 import { AllergiesResponses } from './allergies.responses';
+import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 
 @Controller('allergies')
 @ApiTags('allergies')
@@ -31,27 +32,30 @@ export class AllergiesController {
   @Get('byPetId/:petId')
   @AllergiesResponses.allergies
   @ApiOperation({ summary: 'Get all allergies by pet id' })
-  findAll(@Param('petId') id: string) {
+  findAll(@Param('petId', IdValidationPipe) id: string) {
     return this.allergiesService.findAll(id);
   }
 
   @Get(':id')
   @AllergiesResponses.allergy
   @ApiOperation({ summary: 'Get allergy by id' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', IdValidationPipe) id: string) {
     return this.allergiesService.findOne(id);
   }
 
   @Patch(':id')
   @AllergiesResponses.allergy
   @ApiOperation({ summary: 'Update allergy' })
-  update(@Param('id') id: string, @Body() updateAllergyDto: UpdateAllergyDto) {
+  update(
+    @Param('id', IdValidationPipe) id: string,
+    @Body() updateAllergyDto: UpdateAllergyDto,
+  ) {
     return this.allergiesService.update(id, updateAllergyDto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete allergy' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id', IdValidationPipe) id: string) {
     return this.allergiesService.remove(id);
   }
 }
