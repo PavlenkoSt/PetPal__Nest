@@ -25,3 +25,12 @@ export class VetVisit {
 }
 
 export const VetVisitSchema = SchemaFactory.createForClass(VetVisit);
+
+VetVisitSchema.virtual('pet', {
+  ref: 'Pet',
+  localField: 'petId',
+  foreignField: '_id',
+  justOne: true,
+});
+
+VetVisitSchema.set('toJSON', { virtuals: true });

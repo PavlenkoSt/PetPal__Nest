@@ -42,11 +42,11 @@ export class VetVisitController {
     return this.vetVisitService.getAllByPetId(petId);
   }
 
-  @Get('byUserId/:userId')
+  @Get('allForCurrentUser')
   @VetVisitResponses.vetVisits
   @ApiOperation({ summary: 'Get all vet visits by user id' })
-  getAllByUserId(@Param('userId', IdValidationPipe) userId: string) {
-    return this.vetVisitService.getAllByUserId(userId);
+  getAllByUserId(@User() currentUser: ICurrentUser) {
+    return this.vetVisitService.getAllByUserId(String(currentUser.id));
   }
 
   @Get(':id')

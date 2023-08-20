@@ -20,9 +20,9 @@ export class VetVisitRepository {
   }
 
   getAllVisitsByUserId(userId: string) {
-    return this.vetVisitModel
-      .find({ userId })
-      .populate('pets', { ownerId: false });
+    return this.vetVisitModel.find({ userId }).populate('pet', {
+      ownerId: false,
+    });
   }
 
   create(visitDetails: IVetVisitWithUserId) {
