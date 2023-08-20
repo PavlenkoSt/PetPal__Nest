@@ -1,11 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsBoolean,
   IsDateString,
   IsMongoId,
   IsOptional,
   IsString,
-  Length,
+  MaxLength,
 } from 'class-validator';
 
 export class CreateVetVisitDto {
@@ -16,7 +15,7 @@ export class CreateVetVisitDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  @Length(2, 50)
+  @MaxLength(50)
   description?: string;
 
   @ApiProperty()

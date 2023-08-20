@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 
 import { VetVisit } from './schemas/vet-visit.schema';
 import { UpdateVetVisitDto } from './dto/update-vet-visit.dto';
@@ -15,12 +15,12 @@ export class VetVisitRepository {
     return this.vetVisitModel.findById(id);
   }
 
-  getAllVisitsByPetId(petId: string) {
-    return this.vetVisitModel.find({ petId });
+  getAllVisitsByPetId(petId: string, query: FilterQuery<VetVisit>) {
+    return this.vetVisitModel.find({ petId, ...query });
   }
 
-  getAllVisitsByUserId(userId: string) {
-    return this.vetVisitModel.find({ userId }).populate('pet', {
+  getAllVisitsByUserId(userId: string, query: FilterQuery<VetVisit>) {
+    return this.vetVisitModel.find({ userId, ...query }).populate('pet', {
       ownerId: false,
     });
   }

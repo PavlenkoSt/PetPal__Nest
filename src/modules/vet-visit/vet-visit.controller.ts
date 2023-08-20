@@ -6,8 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { VetVisitService } from './vet-visit.service';
 import { CreateVetVisitDto } from './dto/create-vet-visit.dto';
@@ -15,6 +21,7 @@ import { UpdateVetVisitDto } from './dto/update-vet-visit.dto';
 import { ICurrentUser, User } from 'src/decorators/user.decorator';
 import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 import { VetVisitResponses } from './vet-visit.responses';
+import { VetVisitStatusQueryEnum } from './interfaces/VetVisitStatusQueryEnum';
 
 @ApiBearerAuth()
 @ApiTags('vet-visit')
@@ -38,15 +45,39 @@ export class VetVisitController {
   @Get('byPetId/:petId')
   @VetVisitResponses.vetVisits
   @ApiOperation({ summary: 'Get all vet visits by pet id' })
-  getAllByPetId(@Param('petId', IdValidationPipe) petId: string) {
-    return this.vetVisitService.getAllByPetId(petId);
+  @ApiQuery({
+    name: 'status',
+    description: 'Filter vet visits by status',
+    required: false,
+    enumName: 'status',
+    enum: VetVisitStatusQueryEnum,
+  })
+  getAllByPetId(
+    @Param('petId', IdValidationPipe) petId: string,
+    @Query() queryParams: { status: VetVisitStatusQueryEnum },
+  ) {
+    const { status = VetVisitStatusQueryEnum.ALL } = queryParams;
+
+    return this.vetVisitService.getAllByPetId(petId, status);
   }
 
   @Get('allForCurrentUser')
   @VetVisitResponses.vetVisits
   @ApiOperation({ summary: 'Get all vet visits by user id' })
-  getAllByUserId(@User() currentUser: ICurrentUser) {
-    return this.vetVisitService.getAllByUserId(String(currentUser.id));
+  @ApiQuery({
+    name: 'status',
+    description: 'Filter vet visits by status',
+    required: false,
+    enumName: 'status',
+    enum: VetVisitStatusQueryEnum,
+  })
+  getAllByUserId(
+    @User() currentUser: ICurrentUser,
+    @Query() queryParams: { status: VetVisitStatusQueryEnum },
+  ) {
+    const { status = VetVisitStatusQueryEnum.ALL } = queryParams;
+
+    return this.vetVisitService.getAllByUserId(String(currentUser.id), status);
   }
 
   @Get(':id')

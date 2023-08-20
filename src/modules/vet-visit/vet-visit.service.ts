@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { FilterQuery } from 'mongoose';
 
 import { UpdateVetVisitDto } from './dto/update-vet-visit.dto';
 import { VetVisitRepository } from './vet-visit.repository';
 import { IVetVisitWithUserId } from './interfaces/IVetVisitWithUserId';
+import { VetVisitStatusQueryEnum } from './interfaces/VetVisitStatusQueryEnum';
+import { VetVisit } from './schemas/vet-visit.schema';
+import { statusQueryParserUtil } from './util/status.query-parser.util';
 
 @Injectable()
 export class VetVisitService {
@@ -12,12 +16,18 @@ export class VetVisitService {
     return this.vetVisitRepository.create(vetVisitDetails);
   }
 
-  getAllByPetId(petId: string) {
-    return this.vetVisitRepository.getAllVisitsByPetId(petId);
+  getAllByPetId(petId: string, status: VetVisitStatusQueryEnum) {
+    return this.vetVisitRepository.getAllVisitsByPetId(
+      petId,
+      statusQueryParserUtil(status),
+    );
   }
 
-  getAllByUserId(userId: string) {
-    return this.vetVisitRepository.getAllVisitsByUserId(userId);
+  getAllByUserId(userId: string, status: VetVisitStatusQueryEnum) {
+    return this.vetVisitRepository.getAllVisitsByUserId(
+      userId,
+      statusQueryParserUtil(status),
+    );
   }
 
   getOneById(id: string) {
