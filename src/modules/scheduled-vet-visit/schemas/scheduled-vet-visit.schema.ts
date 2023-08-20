@@ -17,6 +17,9 @@ export class ScheduledVetVisit {
   @Prop({ required: true, type: Types.ObjectId, ref: 'Pet' })
   petId: string;
 
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  userId: string;
+
   @Prop({ required: false, default: false, type: Boolean })
   isDone: boolean;
 }
