@@ -9,9 +9,9 @@ import {
 
 import { Public } from 'src/decorators/public.decorator';
 
-@Controller('health-check')
-@ApiTags('health-check')
-export class HealthCheckController {
+@Controller('system-health-check')
+@ApiTags('system-health-check')
+export class SystemHealthCheckController {
   constructor(
     private health: HealthCheckService,
     private disk: DiskHealthIndicator,

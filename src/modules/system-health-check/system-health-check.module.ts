@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 
-import { HealthCheckController } from './health-check.controller';
+import { SystemHealthCheckController } from './system-health-check.controller';
 
 @Module({
   imports: [TerminusModule.forRoot({ errorLogStyle: 'pretty' }), HttpModule],
-  controllers: [HealthCheckController],
+  controllers: [SystemHealthCheckController],
 })
-export class HealthCheckModule {}
+export class SystemHealthCheckModule {}
