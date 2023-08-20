@@ -30,7 +30,9 @@ export class VetVisitRepository {
   }
 
   update(id: string, updateVisitDto: UpdateVetVisitDto) {
-    return this.vetVisitModel.findByIdAndUpdate(id, updateVisitDto);
+    return this.vetVisitModel.findByIdAndUpdate(id, updateVisitDto, {
+      new: true,
+    });
   }
 
   delete(id: string) {
