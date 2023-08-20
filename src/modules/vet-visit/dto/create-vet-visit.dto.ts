@@ -7,7 +7,7 @@ import {
   Length,
 } from 'class-validator';
 
-export class CreateScheduledVetVisitDto {
+export class CreateVetVisitDto {
   @IsDateString()
   dateTime: string;
 

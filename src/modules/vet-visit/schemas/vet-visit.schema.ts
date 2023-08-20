@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types, HydratedDocument } from 'mongoose';
 
-export type ScheduledVetVisitDocument = HydratedDocument<ScheduledVetVisit>;
+export type VetVisitDocument = HydratedDocument<VetVisit>;
 
 @Schema()
-export class ScheduledVetVisit {
+export class VetVisit {
   @Prop({ required: true, type: String })
   dateTime: string;
 
@@ -24,5 +24,4 @@ export class ScheduledVetVisit {
   isDone: boolean;
 }
 
-export const ScheduledVetVisitSchema =
-  SchemaFactory.createForClass(ScheduledVetVisit);
+export const VetVisitSchema = SchemaFactory.createForClass(VetVisit);

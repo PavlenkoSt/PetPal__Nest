@@ -20,6 +20,7 @@ import { ErrorLogsModule } from './modules/error-logs/error-logs.module';
 import { VaccinationsModule } from './modules/vaccinations/vaccinations.module';
 import { AllergiesModule } from './modules/allergies/allergies.module';
 import { SystemHealthCheckModule } from './modules/system-health-check/system-health-check.module';
+import { VetVisitModule } from './modules/vet-visit/vet-visit.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { SystemHealthCheckModule } from './modules/system-health-check/system-he
     SystemHealthCheckModule,
     VaccinationsModule,
     AllergiesModule,
+    VetVisitModule,
   ],
   providers: [
     JwtBlacklistService,
