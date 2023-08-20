@@ -14,15 +14,6 @@ import { ErrorLogsService } from './modules/error-logs/error-logs.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('PetPal API')
-    .setDescription('')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document);
-
   const s3LoggerService = app.get(S3LoggerService);
   const errorLogsService = app.get(ErrorLogsService);
 
@@ -36,6 +27,15 @@ async function bootstrap() {
   app.enableCors();
   app.enableShutdownHooks();
   app.use(helmet());
+
+  const config = new DocumentBuilder()
+    .setTitle('PetPal API')
+    .setDescription('')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('swagger', app, document);
 
   await app.listen(configuration().PORT || 3000);
 }
