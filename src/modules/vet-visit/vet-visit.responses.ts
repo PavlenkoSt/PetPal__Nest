@@ -3,7 +3,7 @@ import { HttpStatusCode } from 'axios';
 
 import { CreateVetVisitDto } from './dto/create-vet-visit.dto';
 
-type IVetVisit = CreateVetVisitDto & { id: string };
+type IVetVisit = CreateVetVisitDto & { id: string; isDone: boolean };
 
 const vetVisit: IVetVisit = {
   id: 'string',
