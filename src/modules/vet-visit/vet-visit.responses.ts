@@ -3,10 +3,10 @@ import { HttpStatusCode } from 'axios';
 
 import { CreateVetVisitDto } from './dto/create-vet-visit.dto';
 
-type IVetVisit = CreateVetVisitDto & { id: string; isDone: boolean };
+type IVetVisit = CreateVetVisitDto & { _id: string; isDone: boolean };
 
 const vetVisit: IVetVisit = {
-  id: 'string',
+  _id: 'string',
   dateTime: '2023-05-15T20:20:20',
   clinicName: 'VetCl',
   isDone: false,

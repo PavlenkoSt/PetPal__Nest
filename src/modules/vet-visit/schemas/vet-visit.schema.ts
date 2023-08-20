@@ -34,3 +34,5 @@ VetVisitSchema.virtual('pet', {
 });
 
 VetVisitSchema.set('toJSON', { virtuals: true });
+VetVisitSchema.set('toObject', { virtuals: true });
+VetVisitSchema.set('id', false);
