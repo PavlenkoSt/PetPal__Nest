@@ -17,5 +17,6 @@ import { VetVisitRepository } from './vet-visit.repository';
   ],
   controllers: [VetVisitController],
   providers: [VetVisitService, VetVisitRepository],
+  exports: [VetVisitRepository],
 })
 export class VetVisitModule {}

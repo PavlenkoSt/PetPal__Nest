@@ -36,4 +36,8 @@ export class VetVisitRepository {
   delete(id: string) {
     return this.vetVisitModel.findByIdAndDelete(id);
   }
+
+  deleteAllByPetId(petId: string) {
+    return this.vetVisitModel.deleteMany({ petId });
+  }
 }

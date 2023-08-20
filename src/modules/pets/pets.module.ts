@@ -8,6 +8,7 @@ import { PetsRepository } from './pets.repository';
 import { UsersModule } from '../users/users.module';
 import { VaccinationsModule } from '../vaccinations/vaccinations.module';
 import { AllergiesModule } from '../allergies/allergies.module';
+import { VetVisitModule } from '../vet-visit/vet-visit.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AllergiesModule } from '../allergies/allergies.module';
     UsersModule,
     VaccinationsModule,
     AllergiesModule,
+    VetVisitModule,
   ],
   controllers: [PetsController],
   providers: [PetsService, PetsRepository],

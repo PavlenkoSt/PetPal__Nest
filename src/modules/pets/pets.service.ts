@@ -9,6 +9,7 @@ import { PetsRepository } from './pets.repository';
 import { UsersRepository } from '../users/users.repository';
 import { VaccinationsRepository } from '../vaccinations/vaccinations.repository';
 import { AllergiesRepository } from '../allergies/allergies.repository';
+import { VetVisitRepository } from '../vet-visit/vet-visit.repository';
 
 @Injectable()
 export class PetsService {
@@ -17,6 +18,7 @@ export class PetsService {
     private readonly usersRepository: UsersRepository,
     private readonly vaccinationsRepository: VaccinationsRepository,
     private readonly allergiesRepository: AllergiesRepository,
+    private readonly vetVisitRepository: VetVisitRepository,
   ) {}
 
   async create(createPetDto: CreatePetDto, currentUser: ICurrentUser) {
@@ -52,8 +54,9 @@ export class PetsService {
     } else {
       await Promise.all([
         this.vaccinationsRepository.deleteAllByPetId(id),
-        this.usersRepository.removePet(String(user.id), id),
         this.allergiesRepository.deleteAllByPetId(id),
+        this.vetVisitRepository.deleteAllByPetId(id),
+        this.usersRepository.removePet(String(user.id), id),
       ]);
     }
 
