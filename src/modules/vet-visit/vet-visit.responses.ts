@@ -1,11 +1,13 @@
 import { ApiResponse } from '@nestjs/swagger';
 import { HttpStatusCode } from 'axios';
 
-import { CreateVetVisitDto } from './dto/create-vet-visit.dto';
+import { IVetVisitWithIsDone } from './interfaces/IVetVisitWithIsDone';
 
-type IVetVisit = CreateVetVisitDto & { _id: string; isDone: boolean };
+export interface IVetVisitResponse extends IVetVisitWithIsDone {
+  _id: string;
+}
 
-const vetVisit: IVetVisit = {
+export const vetVisitInResponse: IVetVisitResponse = {
   _id: 'string',
   dateTime: '2023-05-15T20:20:20',
   clinicName: 'VetCl',
@@ -18,19 +20,19 @@ export const VetVisitResponses = {
   vetVisitCreated: ApiResponse({
     status: HttpStatusCode.Created,
     schema: {
-      example: vetVisit,
+      example: vetVisitInResponse,
     },
   }),
   vetVisit: ApiResponse({
     status: HttpStatusCode.Ok,
     schema: {
-      example: vetVisit,
+      example: vetVisitInResponse,
     },
   }),
   vetVisits: ApiResponse({
     status: HttpStatusCode.Ok,
     schema: {
-      example: [vetVisit],
+      example: [vetVisitInResponse],
     },
   }),
 };

@@ -4,10 +4,12 @@ import { HttpStatusCode } from 'axios';
 import { CreateVaccinationDto } from './dto/create-vaccination.dto';
 import { VACCINATION_NOT_FOUND } from './vaccinations.constants';
 
-type IVaccinationInResponse = CreateVaccinationDto & { id: string };
+export interface IVaccinationInResponse extends CreateVaccinationDto {
+  _id: string;
+}
 
-const vaccination: IVaccinationInResponse = {
-  id: 'string',
+export const vaccinationInResponse: IVaccinationInResponse = {
+  _id: 'string',
   date: '2023-05-15T20:20:20',
   description: 'string',
   name: 'string',
@@ -18,13 +20,13 @@ export const VaccinationsResponses = {
   vaccination: ApiResponse({
     status: HttpStatusCode.Ok,
     schema: {
-      example: vaccination,
+      example: vaccinationInResponse,
     },
   }),
   vaccinations: ApiResponse({
     status: HttpStatusCode.Ok,
     schema: {
-      example: [vaccination, vaccination],
+      example: [vaccinationInResponse],
     },
   }),
   vaccinationNotFound: ApiResponse({
