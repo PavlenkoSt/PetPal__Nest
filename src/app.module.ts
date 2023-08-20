@@ -18,7 +18,6 @@ import { JwtBlacklistModule } from './modules/jwt-blacklist/jwt-blacklist.module
 import { JwtBlacklistService } from './modules/jwt-blacklist/jwt-blacklist.service';
 import { ErrorLogsModule } from './modules/error-logs/error-logs.module';
 import { HealthCheckModule } from './modules/health-check/health-check.module';
-import { MedicationsModule } from './modules/medications/medications.module';
 import { VaccinationsModule } from './modules/vaccinations/vaccinations.module';
 import { AllergiesModule } from './modules/allergies/allergies.module';
 
@@ -44,7 +43,6 @@ import { AllergiesModule } from './modules/allergies/allergies.module';
     JwtBlacklistModule,
     ErrorLogsModule,
     HealthCheckModule,
-    MedicationsModule,
     VaccinationsModule,
     AllergiesModule,
   ],
