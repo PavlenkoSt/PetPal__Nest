@@ -45,10 +45,15 @@ const aggregatingMedication = [
   {
     $lookup: {
       from: 'vetvisits',
-      as: 'vet-visits',
+      as: 'vet-visited',
       localField: '_id',
       foreignField: 'petId',
       pipeline: [
+        {
+          $match: {
+            isDone: true,
+          },
+        },
         {
           $project: {
             petId: false,
