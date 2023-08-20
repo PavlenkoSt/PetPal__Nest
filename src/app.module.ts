@@ -21,6 +21,7 @@ import { VaccinationsModule } from './modules/vaccinations/vaccinations.module';
 import { AllergiesModule } from './modules/allergies/allergies.module';
 import { SystemHealthCheckModule } from './modules/system-health-check/system-health-check.module';
 import { VetVisitModule } from './modules/vet-visit/vet-visit.module';
+import { MedicationHistoryModule } from './modules/medication-history/medication-history.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { VetVisitModule } from './modules/vet-visit/vet-visit.module';
     VaccinationsModule,
     AllergiesModule,
     VetVisitModule,
+    MedicationHistoryModule,
   ],
   providers: [
     JwtBlacklistService,

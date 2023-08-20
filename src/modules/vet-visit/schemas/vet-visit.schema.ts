@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types, HydratedDocument } from 'mongoose';
+import { Schema as NativeSchema, HydratedDocument } from 'mongoose';
 
 export type VetVisitDocument = HydratedDocument<VetVisit>;
 
@@ -14,10 +14,10 @@ export class VetVisit {
   @Prop({ required: true, type: String })
   clinicName: string;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: 'Pet' })
+  @Prop({ required: true, type: NativeSchema.Types.ObjectId, ref: 'Pet' })
   petId: string;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  @Prop({ required: true, type: NativeSchema.Types.ObjectId, ref: 'User' })
   userId: string;
 
   @Prop({ required: false, default: false, type: Boolean })
