@@ -14,7 +14,6 @@ import { S3LoggerService } from './aws/s3-logger.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { PetsModule } from './modules/pets/pets.module';
-import { PetsMediaModule } from './modules/pets-media/pets-media.module';
 import { JwtBlacklistModule } from './modules/jwt-blacklist/jwt-blacklist.module';
 import { JwtBlacklistService } from './modules/jwt-blacklist/jwt-blacklist.service';
 import { ErrorLogsModule } from './modules/error-logs/error-logs.module';
@@ -42,7 +41,6 @@ import { AllergiesModule } from './modules/allergies/allergies.module';
     AuthModule,
     UsersModule,
     PetsModule,
-    PetsMediaModule,
     JwtBlacklistModule,
     ErrorLogsModule,
     HealthCheckModule,
