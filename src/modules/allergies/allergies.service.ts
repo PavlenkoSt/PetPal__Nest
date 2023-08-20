@@ -25,7 +25,11 @@ export class AllergiesService {
     return this.allergiesRepository.update(id, updateAllegryDto);
   }
 
-  remove(id: string) {
+  delete(id: string) {
     return this.allergiesRepository.delete(id);
+  }
+
+  deleteAllByPetId(petId: string) {
+    return this.allergiesRepository.delete(petId);
   }
 }

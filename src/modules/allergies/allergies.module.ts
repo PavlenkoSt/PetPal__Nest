@@ -12,5 +12,6 @@ import { Allergy, AllergySchema } from './schemas/allergy.schema';
   ],
   controllers: [AllergiesController],
   providers: [AllergiesService, AllergiesRepository],
+  exports: [AllergiesRepository],
 })
 export class AllergiesModule {}

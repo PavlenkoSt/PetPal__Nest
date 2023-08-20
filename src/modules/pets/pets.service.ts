@@ -8,6 +8,7 @@ import { PET_NOT_FOUND } from './pets.constants';
 import { PetsRepository } from './pets.repository';
 import { UsersRepository } from '../users/users.repository';
 import { VaccinationsRepository } from '../vaccinations/vaccinations.repository';
+import { AllergiesRepository } from '../allergies/allergies.repository';
 
 @Injectable()
 export class PetsService {
@@ -15,6 +16,7 @@ export class PetsService {
     private readonly petsRepository: PetsRepository,
     private readonly usersRepository: UsersRepository,
     private readonly vaccinationsRepository: VaccinationsRepository,
+    private readonly allergiesRepository: AllergiesRepository,
   ) {}
 
   async create(createPetDto: CreatePetDto, currentUser: ICurrentUser) {
@@ -48,8 +50,11 @@ export class PetsService {
         message: PET_NOT_FOUND,
       });
     } else {
-      await this.vaccinationsRepository.deleteAllByPetId(id);
-      await this.usersRepository.removePet(String(user.id), id);
+      await Promise.all([
+        this.vaccinationsRepository.deleteAllByPetId(id),
+        this.usersRepository.removePet(String(user.id), id),
+        this.allergiesRepository.deleteAllByPetId(id),
+      ]);
     }
 
     return res;

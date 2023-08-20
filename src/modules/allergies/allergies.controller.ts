@@ -56,6 +56,6 @@ export class AllergiesController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete allergy' })
   remove(@Param('id', IdValidationPipe) id: string) {
-    return this.allergiesService.remove(id);
+    return this.allergiesService.delete(id);
   }
 }

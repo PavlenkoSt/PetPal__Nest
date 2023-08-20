@@ -27,8 +27,12 @@ export class AllergiesRepository {
     return this.allergyModel.findByIdAndDelete(id);
   }
 
-  getAllByPetId(id) {
-    return this.allergyModel.find({ petId: id }, { petId: 0 });
+  deleteAllByPetId(petId: string) {
+    return this.allergyModel.deleteMany({ petId });
+  }
+
+  getAllByPetId(petId: string) {
+    return this.allergyModel.find({ petId }, { petId: 0 });
   }
 
   getById(id: string) {
