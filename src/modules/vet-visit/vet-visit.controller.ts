@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { VetVisitService } from './vet-visit.service';
 import { CreateVetVisitDto } from './dto/create-vet-visit.dto';
@@ -16,6 +16,7 @@ import { ICurrentUser, User } from 'src/decorators/user.decorator';
 import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 import { VetVisitResponses } from './vet-visit.responses';
 
+@ApiBearerAuth()
 @ApiTags('vet-visit')
 @Controller('vet-visit')
 export class VetVisitController {
