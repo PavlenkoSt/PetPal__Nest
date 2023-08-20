@@ -11,7 +11,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -20,7 +20,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migrate:create": "migrate create --template-file ./migrations/migrations-utils/template.ts --migrations-dir=\"./migrations/migrations\" --compiler=\"ts:./migrations/migrations-utils/ts-compiler.js\"",
     "migrate:up": "migrate --migrations-dir=\"./migrations/migrations\" --compiler=\"ts:./migrations/migrations-utils/ts-compiler.js\" up",
-    "migrate:down": "migrate --migrations-dir=\"./migrations/migrations\" --compiler=\"ts:./migrations/migrations-utils/ts-compiler.js\" down"
+    "migrate:down": "migrate --migrations-dir=\"./migrations/migrations\" --compiler=\"ts:./migrations/migrations-utils/ts-compiler.js\" down",
+    "docker:build": "docker build --no-cache -t pet-pal .",
+    "docker:run": "docker-compose up -d"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.0",
