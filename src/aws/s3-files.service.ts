@@ -25,4 +25,22 @@ export class S3FilesService {
 
     return uploadResult;
   }
+
+  async deleteFile(key: string) {
+    await this.s3
+      .deleteObject({
+        Bucket: this.configService.get('AWS_S3_SETIFICATES_BUCKET'),
+        Key: key,
+      })
+      .promise();
+  }
+
+  async getFile(key: string) {
+    return await this.s3
+      .getObject({
+        Bucket: this.configService.get('AWS_S3_SETIFICATES_BUCKET'),
+        Key: key,
+      })
+      .promise();
+  }
 }
