@@ -20,5 +20,6 @@ import { VetVisitModule } from '../vet-visit/vet-visit.module';
   ],
   controllers: [PetsController],
   providers: [PetsService, PetsRepository],
+  exports: [PetsRepository],
 })
 export class PetsModule {}

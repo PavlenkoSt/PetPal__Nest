@@ -5,12 +5,15 @@ import {
   UploadedFile,
   ParseFilePipe,
   FileTypeValidator,
+  Query,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 
 import { CertificatesService } from './certificates.service';
 import { CertificateUploadDto } from './dto/certificate-upload.dto';
+import { ICurrentUser, User } from 'src/decorators/user.decorator';
+import { CertificatesResponses } from './sertificates.responses';
 
 @ApiTags('certificates')
 @Controller('certificates')
@@ -25,6 +28,7 @@ export class CertificatesController {
     type: CertificateUploadDto,
   })
   @UseInterceptors(FileInterceptor('certificate'))
+  @CertificatesResponses.certificateCreated
   uploadFile(
     @UploadedFile(
       new ParseFilePipe({
@@ -36,7 +40,9 @@ export class CertificatesController {
       }),
     )
     file: Express.Multer.File,
+    @Query('petId') petId: string,
+    @User() currentUser: ICurrentUser,
   ) {
-    return this.certificatesService.upload(file);
+    return this.certificatesService.upload(file, petId, currentUser);
   }
 }
