@@ -37,6 +37,6 @@ export class CertificatesController {
     )
     file: Express.Multer.File,
   ) {
-    console.log('file', file);
+    return this.certificatesService.upload(file);
   }
 }

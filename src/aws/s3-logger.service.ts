@@ -3,24 +3,14 @@ import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 
 import { IConfigService } from '../config/configuration';
+import { connectToS3 } from './s3';
 
 @Injectable()
 export class S3LoggerService {
   private s3: S3;
 
   constructor(private configService: ConfigService<IConfigService>) {
-    const region = this.configService.get('AWS_REGION', { infer: true });
-    const accessKeyId = this.configService.get('AWS_ACCESS_KEY_ID', {
-      infer: true,
-    });
-    const secretAccessKey = this.configService.get('AWS_SECRET_ACCESS_KEY', {
-      infer: true,
-    });
-
-    if (!accessKeyId || !secretAccessKey)
-      throw new Error('AWS S3 connection failed');
-
-    this.s3 = new S3({ region, credentials: { accessKeyId, secretAccessKey } });
+    this.s3 = connectToS3(configService);
   }
 
   async saveLogToS3(key: string, data: string): Promise<void> {
