@@ -8,6 +8,7 @@ export interface IConfigService {
   AWS_SECRET_ACCESS_KEY: string;
   AWS_REGION: string;
   AWS_S3_ERRORS_BUCKET: string;
+  AWS_S3_SETIFICATES_BUCKET: string;
 }
 
 export default () =>
@@ -21,4 +22,5 @@ export default () =>
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     AWS_REGION: process.env.AWS_REGION,
     AWS_S3_ERRORS_BUCKET: process.env.AWS_S3_ERRORS_BUCKET,
+    AWS_S3_SETIFICATES_BUCKET: process.env.AWS_S3_SETIFICATES_BUCKET,
   } as IConfigService);
