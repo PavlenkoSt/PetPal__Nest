@@ -22,4 +22,8 @@ export class CertificatesRepository {
   getAllByPetId(petId: string) {
     return this.certificateModel.find({ petId });
   }
+
+  getById(id: string) {
+    return this.certificateModel.findById(id);
+  }
 }

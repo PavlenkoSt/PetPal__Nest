@@ -1,10 +1,18 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { Response } from 'express';
 
 import { S3FilesService } from 'src/aws/s3-files.service';
 import { CertificatesRepository } from './certificates.repository';
 import { ICurrentUser } from 'src/decorators/user.decorator';
 import { PetsRepository } from '../pets/pets.repository';
-import { FORBID_ASSIGN_CERTIFICATE } from './certificates.constants';
+import {
+  FORBID_ASSIGN_CERTIFICATE,
+  NOT_FOUND_CERTIFICATE,
+} from './certificates.constants';
 
 @Injectable()
 export class CertificatesService {
@@ -39,7 +47,21 @@ export class CertificatesService {
     return this.certificatesRepository.create({ key: uploaded.Key, petId });
   }
 
-  async getAllByPetId(petId: string) {
+  getAllByPetId(petId: string) {
     return this.certificatesRepository.getAllByPetId(petId);
+  }
+
+  async getById(id: string, res: Response) {
+    const certificate = await this.certificatesRepository.getById(id);
+
+    if (!certificate)
+      throw new NotFoundException({
+        message: NOT_FOUND_CERTIFICATE,
+      });
+
+    const stream = await this.s3FilesService.getFile(certificate.key);
+
+    return stream.pipe(res as any);
+    // return this.certificatesRepository.getById(id);
   }
 }
