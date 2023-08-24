@@ -22,4 +22,10 @@ export const CertificatesResponses = {
       example: certificatesResponse,
     },
   }),
+  certificates: ApiResponse({
+    status: HttpStatusCode.Ok,
+    schema: {
+      example: [certificatesResponse],
+    },
+  }),
 };

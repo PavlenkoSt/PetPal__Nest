@@ -38,4 +38,8 @@ export class CertificatesService {
 
     return this.certificatesRepository.create({ key: uploaded.Key, petId });
   }
+
+  async getAllByPetId(petId: string) {
+    return this.certificatesRepository.getAllByPetId(petId);
+  }
 }

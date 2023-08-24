@@ -18,4 +18,8 @@ export class CertificatesRepository {
       uploadedAt: new Date().toISOString(),
     });
   }
+
+  getAllByPetId(petId: string) {
+    return this.certificateModel.find({ petId });
+  }
 }
