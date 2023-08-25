@@ -10,6 +10,7 @@ import {
   Param,
   Res,
   Header,
+  Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -82,5 +83,10 @@ export class CertificatesController {
     @Res() res: Response,
   ) {
     return this.certificatesService.getById(id, res);
+  }
+
+  @Delete(':id')
+  deleteCertificate(@Param('id', IdValidationPipe) id: string) {
+    return this.certificatesService.deleteById(id);
   }
 }

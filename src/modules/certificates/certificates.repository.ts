@@ -26,4 +26,8 @@ export class CertificatesRepository {
   getById(id: string) {
     return this.certificateModel.findById(id);
   }
+
+  deleteById(id: string) {
+    return this.certificateModel.findByIdAndDelete(id);
+  }
 }

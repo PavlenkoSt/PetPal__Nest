@@ -62,6 +62,11 @@ export class CertificatesService {
     const stream = await this.s3FilesService.getFile(certificate.key);
 
     return stream.pipe(res as any);
-    // return this.certificatesRepository.getById(id);
+  }
+
+  async deleteById(id: string) {
+    const targetCertificate = await this.certificatesRepository.deleteById(id);
+
+    await this.s3FilesService.deleteFile(targetCertificate.key);
   }
 }
