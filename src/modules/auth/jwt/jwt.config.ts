@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
 
 import { IConfigService } from 'src/config/configuration';
-import { JWT_SECRET } from '../auth.contants';
 
 @Injectable()
 export class JwtConfig implements JwtOptionsFactory {
@@ -14,7 +13,7 @@ export class JwtConfig implements JwtOptionsFactory {
     const isProduction = mode === 'production';
 
     return {
-      secret: JWT_SECRET,
+      secret: this.configService.get('JWT_SECRET', { infer: true }),
       signOptions: {
         expiresIn: isProduction ? '1h' : '1d',
       },

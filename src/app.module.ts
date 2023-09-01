@@ -23,6 +23,7 @@ import { SystemHealthCheckModule } from './modules/system-health-check/system-he
 import { VetVisitModule } from './modules/vet-visit/vet-visit.module';
 import { MedicationHistoryModule } from './modules/medication-history/medication-history.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
+import { ChatsModule } from './modules/chats/chats.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { CertificatesModule } from './modules/certificates/certificates.module';
     VetVisitModule,
     MedicationHistoryModule,
     CertificatesModule,
+    ChatsModule,
   ],
   providers: [
     JwtBlacklistService,

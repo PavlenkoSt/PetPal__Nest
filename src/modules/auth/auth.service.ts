@@ -8,6 +8,8 @@ import { mongoParseObject } from 'src/db/mongo-parse-object.util';
 import { JwtBlacklistService } from '../jwt-blacklist/jwt-blacklist.service';
 import { IDecodedToken } from 'src/interfaces/IDecodedToken';
 import { CreateUserDto } from '../users/dto/create-user.dto';
+import { ITokenPayload } from './auth.interfaces';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +17,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly jwtBlacklistService: JwtBlacklistService,
+    private readonly configService: ConfigService,
   ) {}
 
   async validateUser(login: string, pass: string) {
@@ -32,7 +35,7 @@ export class AuthService {
   }
 
   async login(user: ICurrentUser) {
-    const payload = { username: user.login, sub: user.id };
+    const payload: ITokenPayload = { username: user.login, sub: user.id };
 
     const access_token = await this.jwtService.signAsync(payload);
     const refresh_token = await this.jwtService.signAsync(payload, {
@@ -43,6 +46,26 @@ export class AuthService {
       access_token,
       refresh_token,
     };
+  }
+
+  async getUserFromAuthenticationToken(token: string) {
+    const veryfied = this.jwtService.verify(token, {
+      secret: this.configService.get('JWT_SECRET'),
+    });
+
+    if (!veryfied) throw new UnauthorizedException();
+
+    const decoded = this.jwtService.decode(token);
+
+    if (!decoded) throw new UnauthorizedException();
+
+    const { sub } = decoded as ITokenPayload;
+
+    const user = await this.usersService.findOneById(String(sub));
+
+    if (!user) throw new UnauthorizedException();
+
+    return user;
   }
 
   async register(registerDto: CreateUserDto) {

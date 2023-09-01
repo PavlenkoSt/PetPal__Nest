@@ -20,5 +20,6 @@ import { JwtBlacklistService } from '../jwt-blacklist/jwt-blacklist.service';
   ],
   controllers: [AuthController],
   providers: [JwtBlacklistService, AuthService, LocalStrategy, JWTStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}
