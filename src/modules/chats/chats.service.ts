@@ -7,12 +7,15 @@ import { ChatsRepository } from './chats.repository';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { INVALID_CREDENTIALS } from '../auth/auth.contants';
 import { CHAT_ALREADY_EXIST } from './chats.contants';
+import { ChatMessagesRepository } from '../chat-messages/chat-messages.repository';
+import { CreateChatMessageDto } from '../chat-messages/dto/create-chat-message.dto';
 
 @Injectable()
 export class ChatsService {
   constructor(
     private readonly authService: AuthService,
     private readonly chatsRepository: ChatsRepository,
+    private readonly chatMessagesRepository: ChatMessagesRepository,
   ) {}
 
   async getUserFromSocket(socket: Socket) {
@@ -40,5 +43,13 @@ export class ChatsService {
 
   getChatsByUserId(userId: string) {
     return this.chatsRepository.getAllChatByUserId(userId);
+  }
+
+  async sendMessage(dto: CreateChatMessageDto) {
+    const message = await this.chatMessagesRepository.create(dto);
+
+    await this.chatsRepository.addMessageToChat(dto.chatId, message.id);
+
+    return message;
   }
 }

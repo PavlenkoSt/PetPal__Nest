@@ -26,7 +26,7 @@ export class ChatsRepository {
     return this.chatModel.findOne({
       participants: {
         $size: 2,
-        $all: [new ObjectId(userId), new ObjectId(withUserId)],
+        $in: [new ObjectId(userId), new ObjectId(withUserId)],
       },
     });
   }
@@ -37,5 +37,15 @@ export class ChatsRepository {
         $in: [new ObjectId(userId)],
       },
     });
+  }
+
+  addMessageToChat(chatId: string, messageId: string) {
+    return this.chatModel.findByIdAndUpdate(
+      chatId,
+      {
+        lastMessage: messageId,
+      },
+      { new: true },
+    );
   }
 }

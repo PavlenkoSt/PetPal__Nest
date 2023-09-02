@@ -1,11 +1,8 @@
 import { IsString } from 'class-validator';
 
-export class CreateChatMessageDto {
+export class SendMessageDto {
   @IsString()
-  text: string;
-
-  @IsString()
-  author: string;
+  message: string;
 
   @IsString()
   chatId: string;

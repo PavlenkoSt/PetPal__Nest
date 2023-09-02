@@ -15,6 +15,7 @@ import {
   CHAT_CREATION_ERROR,
   CHAT_DISCONNECTED,
 } from './chats.contants';
+import { SendMessageDto } from './dto/send-message.dto';
 
 @WebSocketGateway({
   cors: {
@@ -43,7 +44,31 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  @SubscribeMessage(CHAT_REQUEST_EVENTS.GET_CHATS_MESSAGE)
+  @SubscribeMessage(CHAT_REQUEST_EVENTS.SEND_MESSAGE)
+  async handleSendMessage(client: Socket, data: string) {
+    try {
+      const userId = this.clientsSocketIdToUserId.get(client.id);
+
+      const parsedData: SendMessageDto = JSON.parse(data);
+
+      const { message, chatId } = parsedData;
+
+      const created = await this.chatsService.sendMessage({
+        author: userId,
+        text: message,
+        chatId,
+      });
+
+      client.emit(
+        CHAT_RESPONSE_EVENTS.RECEIVE_MESSAGE,
+        JSON.stringify(created),
+      );
+    } catch (e) {
+      client.emit(CHAT_RESPONSE_EVENTS.ERROR, e.message);
+    }
+  }
+
+  @SubscribeMessage(CHAT_REQUEST_EVENTS.GET_MESSAGES)
   handleChatMessages(client: Socket, withUserId: string) {}
 
   @SubscribeMessage(CHAT_REQUEST_EVENTS.CREATE_CHAT)
