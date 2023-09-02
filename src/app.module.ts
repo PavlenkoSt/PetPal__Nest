@@ -24,6 +24,7 @@ import { VetVisitModule } from './modules/vet-visit/vet-visit.module';
 import { MedicationHistoryModule } from './modules/medication-history/medication-history.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
 import { ChatsModule } from './modules/chats/chats.module';
+import { ChatMessagesModule } from './modules/chat-messages/chat-messages.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { ChatsModule } from './modules/chats/chats.module';
     MedicationHistoryModule,
     CertificatesModule,
     ChatsModule,
+    ChatMessagesModule,
   ],
   providers: [
     JwtBlacklistService,
