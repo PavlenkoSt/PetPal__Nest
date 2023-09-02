@@ -31,21 +31,23 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly chatsService: ChatsService) {}
 
   @SubscribeMessage(CHAT_REQUEST_EVENTS.GET_CHATS)
-  handleChats(client: Socket, payload: any): string {
-    const user = this.clientsSocketIdToUserId.get(client.id);
+  async handleGetChats(client: Socket) {
+    try {
+      const userId = this.clientsSocketIdToUserId.get(client.id);
 
-    console.log('====================================');
-    console.log('userId in test', user);
-    console.log('====================================');
+      const chats = await this.chatsService.getChatsByUserId(userId);
 
-    return 'Hello world!';
+      return client.emit(CHAT_RESPONSE_EVENTS.RECEIVE_CHATS, chats);
+    } catch (e) {
+      client.emit(CHAT_RESPONSE_EVENTS.ERROR, `Something went wrong`);
+    }
   }
 
   @SubscribeMessage(CHAT_REQUEST_EVENTS.GET_CHATS_MESSAGE)
-  handleChatMessages() {}
+  handleChatMessages(client: Socket, withUserId: string) {}
 
   @SubscribeMessage(CHAT_REQUEST_EVENTS.CREATE_CHAT)
-  async handleJoinRoom(client: Socket, withUserId: string) {
+  async handleCreateChat(client: Socket, withUserId: string) {
     try {
       const userId = this.clientsSocketIdToUserId.get(client.id);
 

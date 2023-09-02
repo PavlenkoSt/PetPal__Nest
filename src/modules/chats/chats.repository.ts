@@ -30,4 +30,12 @@ export class ChatsRepository {
       },
     });
   }
+
+  getAllChatByUserId(userId: string) {
+    return this.chatModel.find({
+      participants: {
+        $in: [new ObjectId(userId)],
+      },
+    });
+  }
 }

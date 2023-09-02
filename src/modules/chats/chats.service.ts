@@ -37,4 +37,8 @@ export class ChatsService {
 
     return await this.chatsRepository.createChat(dto);
   }
+
+  getChatsByUserId(userId: string) {
+    return this.chatsRepository.getAllChatByUserId(userId);
+  }
 }
