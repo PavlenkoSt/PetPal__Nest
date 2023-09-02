@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { ConflictException } from 'src/exceptions/conflict.exception';
 
@@ -8,7 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { hashPassword } from '../auth/util/password-hash.util';
 import { mongoParseObject } from 'src/db/mongo-parse-object.util';
 import { UserDocument } from './schemas/user.schema';
-import { LOGIN_ALREADY_EXITS } from './users.constants';
+import { LOGIN_ALREADY_EXITS, USER_NOT_FOUND } from './users.constants';
 import { UsersRepository } from './users.repository';
 
 @Injectable()
@@ -19,8 +19,12 @@ export class UsersService {
     return this.usersRepository.getByLogin(login);
   }
 
-  getProfile(id: string) {
-    return this.usersRepository.getByIdWithPets(id);
+  async getById(id: string) {
+    const user = await this.usersRepository.getByIdWithPets(id);
+
+    if (!user) throw new NotFoundException(USER_NOT_FOUND);
+
+    return user;
   }
 
   async findOneById(id: string) {

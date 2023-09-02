@@ -16,13 +16,13 @@ export class UsersController {
   @ApiOperation({ summary: 'Get current user' })
   @UsersResponses.userWithPets
   getProfile(@User() user: ICurrentUser) {
-    return this.usersService.getProfile(String(user.id));
+    return this.usersService.getById(String(user.id));
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get user by id' })
   @UsersResponses.userWithPets
   getProfileById(@Param('id', IdValidationPipe) id: string) {
-    return this.usersService.getProfile(id);
+    return this.usersService.getById(id);
   }
 }
