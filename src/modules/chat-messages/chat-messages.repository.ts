@@ -12,6 +12,14 @@ import {
   DEFAULT_PAGE_NUMBER,
 } from 'src/utilts/constants/pagination.contants';
 
+const populateAuthor = {
+  path: 'author',
+  select: {
+    passwordHash: false,
+    pets: false,
+  },
+};
+
 @Injectable()
 export class ChatMessagesRepository {
   constructor(
@@ -19,20 +27,29 @@ export class ChatMessagesRepository {
     private readonly chatMessagesModel: PaginateModel<Model<ChatMessages>>,
   ) {}
 
-  create(dto: CreateChatMessageDto) {
-    return this.chatMessagesModel.create(dto);
+  async create(dto: CreateChatMessageDto) {
+    const created = await this.chatMessagesModel.create(dto);
+
+    return created.populate(populateAuthor);
   }
 
   edit(dto: UpdateChatMessageDto) {
-    return this.chatMessagesModel.findOneAndUpdate(
-      { author: dto.author, chatId: dto.chatId },
-      { text: dto.text },
-      { new: true },
-    );
+    return this.chatMessagesModel
+      .findOneAndUpdate(
+        { author: dto.author, chatId: dto.chatId },
+        { text: dto.text },
+        { new: true },
+      )
+      .select({ author: false });
   }
 
-  delete(id: string) {
-    return this.chatMessagesModel.findByIdAndDelete(id);
+  delete(id: string, authorId: string) {
+    return this.chatMessagesModel
+      .findOneAndDelete({
+        _id: id,
+        author: authorId,
+      })
+      .select({ author: false });
   }
 
   async getMessages(chatId: string, paginationObj: PaginationDto) {
@@ -47,16 +64,19 @@ export class ChatMessagesRepository {
       },
       {
         ...options,
-        populate: {
-          path: 'author',
-          select: {
-            passwordHash: false,
-            pets: false,
-          },
-        },
+        populate: populateAuthor,
       },
     );
 
     return res;
+  }
+
+  async getNewestMessage(chatId: string) {
+    return this.chatMessagesModel
+      .findOne({ chatId })
+      .sort({
+        createdAt: -1,
+      })
+      .exec();
   }
 }

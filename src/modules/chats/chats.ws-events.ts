@@ -3,6 +3,7 @@ export enum CHAT_REQUEST_EVENTS {
   CREATE_CHAT = 'createChat',
   GET_MESSAGES = 'getMessages',
   SEND_MESSAGE = 'sendMessage',
+  DELETE_MESSAGE = 'deleteMessage',
 }
 
 export enum CHAT_RESPONSE_EVENTS {
@@ -11,4 +12,5 @@ export enum CHAT_RESPONSE_EVENTS {
   RECEIVE_CHATS = 'receiveChats',
   RECEIVE_MESSAGE = 'receiveMessage',
   RECEIVE_MESSAGES = 'receiveMessages',
+  DELETED_MESSAGE = 'deletedMessage',
 }

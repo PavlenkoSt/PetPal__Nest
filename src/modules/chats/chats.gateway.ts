@@ -14,10 +14,12 @@ import {
   CHAT_CONNECTION_ERROR,
   CHAT_CREATION_ERROR,
   CHAT_DISCONNECTED,
+  MESSAGE_NOT_FOUND,
 } from './chats.contants';
 import { SendMessageDto } from './dto/send-message.dto';
 import { ChatsWsMemory } from './chats.ws-memory';
 import { PaginationDto } from 'src/utilts/dto/PaginationDto';
+import { DeleteMessageDto } from './dto/delete-message.dto';
 
 @WebSocketGateway({
   cors: {
@@ -132,6 +134,33 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         CHAT_RESPONSE_EVENTS.ERROR,
         `${CHAT_CREATION_ERROR} | ${e.message}`,
       );
+    }
+  }
+
+  @SubscribeMessage(CHAT_REQUEST_EVENTS.DELETE_MESSAGE)
+  async deleteMessage(client: Socket, message: string) {
+    try {
+      const userId = this.chatsWsMemory.getUserIdByClientId(client.id);
+
+      const parsed: DeleteMessageDto = JSON.parse(message);
+
+      const deleted = await this.chatsService.deleteMessage(
+        parsed.chatId,
+        parsed.messageId,
+        userId,
+      );
+
+      const subscribers = this.chatsWsMemory.getChatById(parsed.chatId);
+
+      if (subscribers?.length) {
+        this.chatsWsMemory.emitForClients(
+          subscribers,
+          CHAT_RESPONSE_EVENTS.DELETED_MESSAGE,
+          JSON.stringify(deleted),
+        );
+      }
+    } catch (e) {
+      client.emit(CHAT_RESPONSE_EVENTS.ERROR, e.message);
     }
   }
 

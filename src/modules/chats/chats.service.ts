@@ -1,4 +1,3 @@
-import { PartialType } from '@nestjs/swagger';
 import { Injectable } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
@@ -7,7 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { ChatsRepository } from './chats.repository';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { INVALID_CREDENTIALS } from '../auth/auth.contants';
-import { CHAT_ALREADY_EXIST } from './chats.contants';
+import { CHAT_ALREADY_EXIST, MESSAGE_NOT_FOUND } from './chats.contants';
 import { ChatMessagesRepository } from '../chat-messages/chat-messages.repository';
 import { CreateChatMessageDto } from '../chat-messages/dto/create-chat-message.dto';
 import { PaginationDto } from 'src/utilts/dto/PaginationDto';
@@ -50,12 +49,37 @@ export class ChatsService {
   async sendMessage(dto: CreateChatMessageDto) {
     const message = await this.chatMessagesRepository.create(dto);
 
-    await this.chatsRepository.addMessageToChat(dto.chatId, message.id);
+    await this.chatsRepository.updateLastMessageInChat(dto.chatId, message.id);
 
     return message;
   }
 
   getMessages(chatId: string, pagination: PaginationDto) {
     return this.chatMessagesRepository.getMessages(chatId, pagination);
+  }
+
+  async deleteMessage(chatId: string, messageId: string, userId: string) {
+    const deleted = await this.chatMessagesRepository.delete(messageId, userId);
+
+    if (!deleted) throw new WsException(MESSAGE_NOT_FOUND);
+
+    const chat = await this.chatsRepository.getChatById(chatId);
+
+    if (String(chat.lastMessage) !== messageId) return deleted;
+
+    const newestMessage = await this.chatMessagesRepository.getNewestMessage(
+      chatId,
+    );
+
+    if (!newestMessage) {
+      await this.chatsRepository.updateLastMessageInChat(chatId, null);
+    } else {
+      await this.chatsRepository.updateLastMessageInChat(
+        chatId,
+        newestMessage.id,
+      );
+    }
+
+    return deleted;
   }
 }

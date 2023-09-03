@@ -31,6 +31,10 @@ export class ChatsRepository {
     });
   }
 
+  getChatById(id: string) {
+    return this.chatModel.findById(id);
+  }
+
   getAllChatByUserId(userId: string) {
     return this.chatModel
       .find({
@@ -43,7 +47,7 @@ export class ChatsRepository {
       .exec();
   }
 
-  addMessageToChat(chatId: string, messageId: string) {
+  updateLastMessageInChat(chatId: string, messageId: string) {
     return this.chatModel.findByIdAndUpdate(
       chatId,
       {
