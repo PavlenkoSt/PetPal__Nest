@@ -7,6 +7,7 @@ import { AuthModule } from '../auth/auth.module';
 import { ChatsRepository } from './chats.repository';
 import { Chat, ChatSchema } from './schemas/chats.schema';
 import { ChatMessagesModule } from '../chat-messages/chat-messages.module';
+import { ChatsWsMemory } from './chats.ws-memory';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { ChatMessagesModule } from '../chat-messages/chat-messages.module';
       },
     ]),
   ],
-  providers: [ChatsGateway, ChatsService, ChatsRepository],
+  providers: [ChatsGateway, ChatsService, ChatsRepository, ChatsWsMemory],
 })
 export class ChatsModule {}

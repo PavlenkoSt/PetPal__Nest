@@ -26,7 +26,7 @@ export class ChatsService {
 
     const token = auth.split(' ')[1];
 
-    const user = this.authService.getUserFromAuthenticationToken(token);
+    const user = await this.authService.getUserFromAuthenticationToken(token);
 
     if (!user) throw new WsException(INVALID_CREDENTIALS);
 

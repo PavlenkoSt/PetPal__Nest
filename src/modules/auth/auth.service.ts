@@ -55,11 +55,11 @@ export class AuthService {
 
     if (!veryfied) throw new UnauthorizedException();
 
-    const decoded = this.jwtService.decode(token);
+    const decoded = this.jwtService.decode(token) as IDecodedToken;
 
     if (!decoded) throw new UnauthorizedException();
 
-    const { sub } = decoded as ITokenPayload;
+    const { sub } = decoded;
 
     const user = await this.usersService.findOneById(String(sub));
 
