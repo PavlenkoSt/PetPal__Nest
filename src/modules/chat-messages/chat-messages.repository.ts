@@ -41,11 +41,22 @@ export class ChatMessagesRepository {
       limit: paginationObj.pageLength || DEFAULT_PAGE_LENGTH,
     };
 
-    return this.chatMessagesModel.paginate(
+    const res = await this.chatMessagesModel.paginate(
       {
         chatId: new ObjectId(chatId),
       },
-      options,
+      {
+        ...options,
+        populate: {
+          path: 'author',
+          select: {
+            passwordHash: false,
+            pets: false,
+          },
+        },
+      },
     );
+
+    return res;
   }
 }

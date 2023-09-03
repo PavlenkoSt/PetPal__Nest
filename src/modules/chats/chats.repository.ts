@@ -38,7 +38,7 @@ export class ChatsRepository {
           $in: [new ObjectId(userId)],
         },
       })
-      .populate('participants')
+      .populate('participants', { passwordHash: false, pets: false })
       .populate('lastMessage')
       .exec();
   }
