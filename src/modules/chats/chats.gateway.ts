@@ -91,9 +91,9 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         withUserId,
       });
 
-      this.chatsWsMemory.addChatsToListen(String(chat.id), client.id);
-
       const toNotify = [client.id];
+
+      this.chatsWsMemory.addChatsToListen(String(chat.id), client.id);
 
       const withUserClientId =
         this.chatsWsMemory.getUserIdByClientId(withUserId);
