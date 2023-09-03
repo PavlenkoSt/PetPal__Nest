@@ -10,4 +10,5 @@ export enum CHAT_RESPONSE_EVENTS {
   CREATED_CHAT = 'createdChat',
   RECEIVE_CHATS = 'receiveChats',
   RECEIVE_MESSAGE = 'receiveMessage',
+  RECEIVE_MESSAGES = 'receiveMessages',
 }

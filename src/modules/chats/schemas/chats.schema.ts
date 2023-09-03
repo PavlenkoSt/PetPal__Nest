@@ -3,7 +3,7 @@ import { HydratedDocument, Schema as NativeSchema } from 'mongoose';
 
 export type ChatDocument = HydratedDocument<Chat>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Chat {
   @Prop({
     required: true,

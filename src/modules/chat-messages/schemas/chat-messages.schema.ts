@@ -3,7 +3,9 @@ import { HydratedDocument, Schema as NativeSchema } from 'mongoose';
 
 export type ChatMessageDocument = HydratedDocument<ChatMessages>;
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class ChatMessages {
   @Prop({
     required: true,
@@ -23,12 +25,6 @@ export class ChatMessages {
     type: NativeSchema.Types.ObjectId,
   })
   chatId: NativeSchema.Types.ObjectId;
-
-  @Prop({ timestamps: true })
-  createdAt: Date;
-
-  @Prop({ timestamps: true })
-  updatedAt: Date;
 }
 
 export const ChatMessagesSchema = SchemaFactory.createForClass(ChatMessages);
