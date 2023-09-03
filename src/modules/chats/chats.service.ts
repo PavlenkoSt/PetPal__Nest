@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/swagger';
 import { Injectable } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
@@ -9,6 +10,7 @@ import { INVALID_CREDENTIALS } from '../auth/auth.contants';
 import { CHAT_ALREADY_EXIST } from './chats.contants';
 import { ChatMessagesRepository } from '../chat-messages/chat-messages.repository';
 import { CreateChatMessageDto } from '../chat-messages/dto/create-chat-message.dto';
+import { PaginationDto } from 'src/utilts/dto/PaginationDto';
 
 @Injectable()
 export class ChatsService {
@@ -51,5 +53,9 @@ export class ChatsService {
     await this.chatsRepository.addMessageToChat(dto.chatId, message.id);
 
     return message;
+  }
+
+  getMessages(chatId: string, pagination: PaginationDto) {
+    return this.chatMessagesRepository.getMessages(chatId, pagination);
   }
 }

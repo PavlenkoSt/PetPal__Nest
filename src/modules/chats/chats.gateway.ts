@@ -17,6 +17,7 @@ import {
 } from './chats.contants';
 import { SendMessageDto } from './dto/send-message.dto';
 import { ChatsWsMemory } from './chats.ws-memory';
+import { PaginationDto } from 'src/utilts/dto/PaginationDto';
 
 @WebSocketGateway({
   cors: {
@@ -79,7 +80,25 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage(CHAT_REQUEST_EVENTS.GET_MESSAGES)
-  handleChatMessages(client: Socket, withUserId: string) {}
+  async handleChatMessages(client: Socket, message: string) {
+    try {
+      const parsed: PaginationDto & { chatId: string } = JSON.parse(message);
+
+      const { chatId, ...pagination } = parsed;
+
+      const result = await this.chatsService.getMessages(chatId, pagination);
+
+      client.emit(
+        CHAT_RESPONSE_EVENTS.RECEIVE_MESSAGES,
+        JSON.stringify(result),
+      );
+    } catch (e) {
+      client.emit(
+        CHAT_RESPONSE_EVENTS.ERROR,
+        e.message || 'Something went wrong',
+      );
+    }
+  }
 
   @SubscribeMessage(CHAT_REQUEST_EVENTS.CREATE_CHAT)
   async handleCreateChat(client: Socket, withUserId: string) {

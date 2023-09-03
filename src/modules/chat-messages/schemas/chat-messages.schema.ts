@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Schema as NativeSchema } from 'mongoose';
+import * as paginate from 'mongoose-paginate-v2';
 
 export type ChatMessageDocument = HydratedDocument<ChatMessages>;
 
@@ -28,3 +29,5 @@ export class ChatMessages {
 }
 
 export const ChatMessagesSchema = SchemaFactory.createForClass(ChatMessages);
+
+ChatMessagesSchema.plugin(paginate);

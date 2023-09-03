@@ -4234,6 +4234,11 @@ mongodb@5.7.0:
   optionalDependencies:
     saslprep "^1.0.3"
 
+mongoose-paginate-v2@^1.7.31:
+  version "1.7.31"
+  resolved "https://registry.yarnpkg.com/mongoose-paginate-v2/-/mongoose-paginate-v2-1.7.31.tgz#c6569688702483e80a28c599314474107f17481f"
+  integrity sha512-Zz7i/1k7/MJqipzttn9SUenbcW1hC63qBOB7HHBNMfIfg0AOPFT2CdAWpeAJ7BBGEQ4qC1Gu02fIaSeMmXOT0A==
+
 mongoose@^7.4.1:
   version "7.4.1"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-7.4.1.tgz#658a0d8ffbbc963990405bd2279fcd2b452be089"
