@@ -2,6 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { APP_GUARD } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
 
 import configuration from './config/configuration';
@@ -25,6 +26,7 @@ import { MedicationHistoryModule } from './modules/medication-history/medication
 import { CertificatesModule } from './modules/certificates/certificates.module';
 import { ChatsModule } from './modules/chats/chats.module';
 import { ChatMessagesModule } from './modules/chat-messages/chat-messages.module';
+import { RefreshTokensModule } from './modules/refresh-tokens/refresh-tokens.module';
 
 @Module({
   imports: [
@@ -42,6 +44,7 @@ import { ChatMessagesModule } from './modules/chat-messages/chat-messages.module
       ttl: 60,
       limit: 10,
     }),
+    ScheduleModule.forRoot(),
     AuthModule,
     UsersModule,
     PetsModule,
@@ -55,6 +58,7 @@ import { ChatMessagesModule } from './modules/chat-messages/chat-messages.module
     CertificatesModule,
     ChatsModule,
     ChatMessagesModule,
+    RefreshTokensModule,
   ],
   providers: [
     JwtBlacklistService,

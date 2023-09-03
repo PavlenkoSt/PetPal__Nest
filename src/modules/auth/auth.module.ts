@@ -9,6 +9,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { JWTStrategy } from './strategies/jwt.strategy';
 import { JwtConfig } from './jwt/jwt.config';
 import { JwtBlacklistService } from '../jwt-blacklist/jwt-blacklist.service';
+import { RefreshTokensModule } from '../refresh-tokens/refresh-tokens.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { JwtBlacklistService } from '../jwt-blacklist/jwt-blacklist.service';
     }),
     UsersModule,
     PassportModule,
+    RefreshTokensModule,
   ],
   controllers: [AuthController],
   providers: [JwtBlacklistService, AuthService, LocalStrategy, JWTStrategy],

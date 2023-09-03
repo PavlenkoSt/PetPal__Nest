@@ -77,12 +77,13 @@ export class AuthController {
   @HttpCode(HttpStatusCode.Ok)
   @ApiBearerAuth()
   logout(
+    @Cookie(REFRESH_TOKEN_COOKIE) refreshTokenCookie,
     @Headers() headers: { authorization: string },
     @Res({ passthrough: true }) response: Response,
   ) {
     const token = headers?.authorization?.split(' ')?.[1];
 
     response.clearCookie('refresh_token');
-    return this.authService.logout(token);
+    return this.authService.logout(token, refreshTokenCookie);
   }
 }
