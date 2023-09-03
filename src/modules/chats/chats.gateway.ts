@@ -4,6 +4,7 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   WebSocketServer,
+  WsException,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 
@@ -14,12 +15,13 @@ import {
   CHAT_CONNECTION_ERROR,
   CHAT_CREATION_ERROR,
   CHAT_DISCONNECTED,
-  MESSAGE_NOT_FOUND,
+  INVALID_PARAMETERS,
 } from './chats.contants';
 import { SendMessageDto } from './dto/send-message.dto';
 import { ChatsWsMemory } from './chats.ws-memory';
 import { PaginationDto } from 'src/utilts/dto/PaginationDto';
 import { DeleteMessageDto } from './dto/delete-message.dto';
+import { isMongoId, validateOrReject } from 'class-validator';
 
 @WebSocketGateway({
   cors: {
@@ -55,11 +57,14 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage(CHAT_REQUEST_EVENTS.SEND_MESSAGE)
   async handleSendMessage(client: Socket, data: string) {
     try {
+      const parsed: SendMessageDto = JSON.parse(data);
+
+      if (!isMongoId(parsed.chatId) || !parsed.message)
+        throw new WsException(INVALID_PARAMETERS);
+
       const userId = this.chatsWsMemory.getUserIdByClientId(client.id);
 
-      const parsedData: SendMessageDto = JSON.parse(data);
-
-      const { message, chatId } = parsedData;
+      const { message, chatId } = parsed;
 
       const created = await this.chatsService.sendMessage({
         author: userId,
@@ -86,6 +91,8 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     try {
       const parsed: PaginationDto & { chatId: string } = JSON.parse(message);
 
+      if (!isMongoId(parsed.chatId)) throw new WsException(INVALID_PARAMETERS);
+
       const { chatId, ...pagination } = parsed;
 
       const result = await this.chatsService.getMessages(chatId, pagination);
@@ -105,6 +112,8 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage(CHAT_REQUEST_EVENTS.CREATE_CHAT)
   async handleCreateChat(client: Socket, withUserId: string) {
     try {
+      if (!isMongoId(withUserId)) throw new WsException(INVALID_PARAMETERS);
+
       const userId = this.chatsWsMemory.getUserIdByClientId(client.id);
 
       const chat = await this.chatsService.createChat({
@@ -140,9 +149,12 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage(CHAT_REQUEST_EVENTS.DELETE_MESSAGE)
   async deleteMessage(client: Socket, message: string) {
     try {
-      const userId = this.chatsWsMemory.getUserIdByClientId(client.id);
-
       const parsed: DeleteMessageDto = JSON.parse(message);
+
+      if (!isMongoId(parsed.messageId) || !isMongoId(parsed.chatId))
+        throw new WsException(INVALID_PARAMETERS);
+
+      const userId = this.chatsWsMemory.getUserIdByClientId(client.id);
 
       const deleted = await this.chatsService.deleteMessage(
         parsed.chatId,
@@ -164,7 +176,7 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  async handleConnection(client: Socket, ...args: any[]) {
+  async handleConnection(client: Socket) {
     try {
       const user = await this.chatsService.getUserFromSocket(client);
 
