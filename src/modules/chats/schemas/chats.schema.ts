@@ -14,13 +14,13 @@ export class Chat {
   participants: [NativeSchema.Types.ObjectId];
 
   @Prop({
-    ref: 'ChatMessage',
+    ref: 'ChatMessages',
     type: NativeSchema.Types.ObjectId,
     unique: false,
     default: null,
     required: false,
   })
-  lastMessage: NativeSchema.Types.ObjectId;
+  lastMessage: NativeSchema.Types.ObjectId | null;
 }
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);
