@@ -5,12 +5,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import {
+  configServiceMock,
   jwtBlacklistServiceMock,
   jwtServiceMock,
+  refreshTokensServiceMock,
   usersServiceMock,
 } from 'src/helpers/mocks';
 import { JwtService } from '@nestjs/jwt';
 import { JwtBlacklistService } from '../jwt-blacklist/jwt-blacklist.service';
+import { RefreshTokensService } from '../refresh-tokens/refresh-tokens.service';
+import { ConfigService } from '@nestjs/config';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -30,6 +34,14 @@ describe('AuthService', () => {
         {
           provide: JwtBlacklistService,
           useValue: jwtBlacklistServiceMock,
+        },
+        {
+          provide: RefreshTokensService,
+          useValue: refreshTokensServiceMock,
+        },
+        {
+          provide: ConfigService,
+          useValue: configServiceMock,
         },
       ],
     }).compile();

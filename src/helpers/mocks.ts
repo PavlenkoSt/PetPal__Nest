@@ -127,3 +127,31 @@ export const jwtServiceMock = {
 };
 
 export const jwtBlacklistServiceMock = {};
+
+export const vaccinationsRepositoryMock = {
+  deleteAllByPetId(id: string) {
+    return {};
+  },
+};
+
+export const vetVisitRepositoryMock = {
+  deleteAllByPetId(id: string) {
+    return {};
+  },
+};
+
+export const allergiesRepositoryMock = {
+  deleteAllByPetId(id: string) {
+    return {};
+  },
+};
+
+export const refreshTokensServiceMock = {
+  add() {},
+  delete() {},
+  get() {
+    return 'refresh-token-123-123';
+  },
+};
+
+export const configServiceMock = {};

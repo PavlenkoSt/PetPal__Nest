@@ -5,9 +5,18 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PetsService } from './pets.service';
 import { PetsRepository } from './pets.repository';
 import { UsersRepository } from '../users/users.repository';
-import { petsRepositoryMock, usersRepositoryMock } from 'src/helpers/mocks';
+import {
+  allergiesRepositoryMock,
+  petsRepositoryMock,
+  usersRepositoryMock,
+  vaccinationsRepositoryMock,
+  vetVisitRepositoryMock,
+} from 'src/helpers/mocks';
 import { ICurrentUser } from 'src/decorators/user.decorator';
 import { UpdatePetDto } from './dto/update-pet.dto';
+import { VaccinationsRepository } from '../vaccinations/vaccinations.repository';
+import { VetVisitRepository } from '../vet-visit/vet-visit.repository';
+import { AllergiesRepository } from '../allergies/allergies.repository';
 
 describe('PetsService', () => {
   const user: ICurrentUser = {
@@ -26,6 +35,15 @@ describe('PetsService', () => {
           useValue: petsRepositoryMock,
         },
         { provide: UsersRepository, useValue: usersRepositoryMock },
+        {
+          provide: VaccinationsRepository,
+          useValue: vaccinationsRepositoryMock,
+        },
+        {
+          provide: VetVisitRepository,
+          useValue: vetVisitRepositoryMock,
+        },
+        { provide: AllergiesRepository, useValue: allergiesRepositoryMock },
       ],
     }).compile();
 
