@@ -8,7 +8,6 @@ import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JWTStrategy } from './strategies/jwt.strategy';
 import { JwtConfig } from './jwt/jwt.config';
-import { JwtBlacklistService } from '../jwt-blacklist/jwt-blacklist.service';
 import { RefreshTokensModule } from '../refresh-tokens/refresh-tokens.module';
 
 @Module({
@@ -21,7 +20,7 @@ import { RefreshTokensModule } from '../refresh-tokens/refresh-tokens.module';
     RefreshTokensModule,
   ],
   controllers: [AuthController],
-  providers: [JwtBlacklistService, AuthService, LocalStrategy, JWTStrategy],
+  providers: [AuthService, LocalStrategy, JWTStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

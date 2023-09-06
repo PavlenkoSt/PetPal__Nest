@@ -16,7 +16,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { PetsModule } from './modules/pets/pets.module';
 import { JwtBlacklistModule } from './modules/jwt-blacklist/jwt-blacklist.module';
-import { JwtBlacklistService } from './modules/jwt-blacklist/jwt-blacklist.service';
 import { ErrorLogsModule } from './modules/error-logs/error-logs.module';
 import { VaccinationsModule } from './modules/vaccinations/vaccinations.module';
 import { AllergiesModule } from './modules/allergies/allergies.module';
@@ -61,7 +60,6 @@ import { RefreshTokensModule } from './modules/refresh-tokens/refresh-tokens.mod
     RefreshTokensModule,
   ],
   providers: [
-    JwtBlacklistService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
