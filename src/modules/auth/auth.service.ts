@@ -52,9 +52,12 @@ export class AuthService {
       expiresAt: new Date(decodedToken.exp * 1000),
     });
 
+    const { pets, ...restUserFields } = user;
+
     return {
       access_token,
       refresh_token,
+      user: restUserFields,
     };
   }
 
@@ -81,7 +84,13 @@ export class AuthService {
   async register(registerDto: CreateUserDto) {
     const user = await this.usersService.create(registerDto);
 
-    return await this.login({ login: user.login, id: user.id });
+    return await this.login({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      login: user.login,
+      pets: user.pets,
+    });
   }
 
   async logout(token: string, refreshToken: string) {

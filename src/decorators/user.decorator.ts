@@ -11,4 +11,7 @@ export const User = createParamDecorator(
 export interface ICurrentUser {
   login: string;
   id: ObjectId;
+  firstName: string;
+  lastName: string;
+  pets: ObjectId[];
 }
