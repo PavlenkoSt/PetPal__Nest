@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
@@ -18,7 +18,19 @@ async function bootstrap() {
   const errorLogsService = app.get(ErrorLogsService);
 
   app.setGlobalPrefix('api');
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      stopAtFirstError: true,
+      exceptionFactory: (errors) => {
+        const firstError = errors?.[0]?.constraints;
+        return new BadRequestException(
+          errors?.[0]?.constraints[Object.keys(firstError)?.[0]] ||
+            'Bad request [unknown reason]',
+        );
+      },
+    }),
+  );
   app.useGlobalFilters(
     new HttpExceptionFilter(s3LoggerService, errorLogsService),
   );
