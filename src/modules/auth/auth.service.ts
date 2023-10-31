@@ -39,9 +39,7 @@ export class AuthService {
   async login(user: ICurrentUser) {
     const payload: ITokenPayload = { username: user.login, sub: user.id };
 
-    const access_token = await this.jwtService.signAsync(payload, {
-      expiresIn: '1h',
-    });
+    const access_token = await this.jwtService.signAsync(payload);
     const refresh_token = await this.jwtService.signAsync(payload, {
       expiresIn: '7d',
     });
@@ -60,8 +58,6 @@ export class AuthService {
       access_token,
       refresh_token,
       user: restUserFields,
-      expiresAt:
-        (this.jwtService.decode(access_token) as IDecodedToken).exp * 1000,
     };
   }
 
