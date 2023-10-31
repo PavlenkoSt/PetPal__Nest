@@ -22,6 +22,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
 import { AuthResponses } from './auth.responses';
 import { REFRESH_TOKEN_COOKIE } from './auth.contants';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -39,11 +40,13 @@ export class AuthController {
     @User() user: ICurrentUser,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const { refresh_token, ...rest } = await this.authService.login(user);
+    const result = await this.authService.login(user);
 
-    response.cookie(REFRESH_TOKEN_COOKIE, refresh_token, { httpOnly: true });
+    response.cookie(REFRESH_TOKEN_COOKIE, result.refresh_token, {
+      httpOnly: true,
+    });
 
-    return rest;
+    return result;
   }
 
   @Public()
@@ -61,16 +64,19 @@ export class AuthController {
   @Post('/refresh-token')
   async refreshToken(
     @Cookie(REFRESH_TOKEN_COOKIE) refreshTokenCookie,
+    @Body() dto: RefreshTokenDto,
     @Res({ passthrough: true })
     response: Response,
   ) {
-    const { refresh_token, ...rest } = await this.authService.refreshToken(
-      refreshTokenCookie,
+    const result = await this.authService.refreshToken(
+      dto.refreshToken || refreshTokenCookie,
     );
 
-    response.cookie(REFRESH_TOKEN_COOKIE, refresh_token, { httpOnly: true });
+    response.cookie(REFRESH_TOKEN_COOKIE, result.refresh_token, {
+      httpOnly: true,
+    });
 
-    return rest;
+    return result;
   }
 
   @Post('/logout')
