@@ -1,6 +1,6 @@
 FROM node:16-alpine
 
-WORKDIR /opt/app
+WORKDIR /app
 
 ADD package*.json ./
 

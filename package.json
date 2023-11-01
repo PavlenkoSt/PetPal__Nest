@@ -22,7 +22,8 @@
     "migrate:up": "migrate --migrations-dir=\"./migrations/migrations\" --compiler=\"ts:./migrations/migrations-utils/ts-compiler.js\" up",
     "migrate:down": "migrate --migrations-dir=\"./migrations/migrations\" --compiler=\"ts:./migrations/migrations-utils/ts-compiler.js\" down",
     "docker:build": "docker build --no-cache -t pet-pal .",
-    "docker:run": "docker-compose up -d"
+    "docker:run": "docker-compose up --build -d",
+    "docker:run:dev": "docker-compose up --build"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.0",

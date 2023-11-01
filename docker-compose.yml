@@ -1,10 +1,28 @@
 version: '3'
 services:
-  pet.pal:
+  pet-pal:
     image: pet-pal:latest
-    container_name: pet-pal
+    build: ./
     restart: always
     ports:
-      - 3000:3000
+      - 8080:8080
+    depends_on:
+      - mongo
     volumes:
       - ./.env:/app/.env
+    networks:
+      - pet-pal-network
+
+  mongo:
+    image: mongo:latest
+    container_name: db
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - pet-pal-network
+
+networks:
+  pet-pal-network:
+
+volumes:
+  mongo-data:
