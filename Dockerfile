@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:16-alpine AS development
 
 WORKDIR /app
 
@@ -8,8 +8,4 @@ RUN npm install
 
 ADD . .
 
-RUN npm run build
-
-RUN npm prune --production
-
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:dev"]

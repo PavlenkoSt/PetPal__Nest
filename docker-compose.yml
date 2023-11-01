@@ -1,7 +1,7 @@
 version: '3'
 services:
-  pet-pal:
-    image: pet-pal:latest
+  pet-pal-api:
+    image: pet-pal-api:latest
     build: ./
     restart: always
     ports:
@@ -9,7 +9,8 @@ services:
     depends_on:
       - mongo
     volumes:
-      - ./.env:/app/.env
+      - .:/app
+      - /app/node_modules
     networks:
       - pet-pal-network
 
